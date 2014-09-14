@@ -19,3 +19,27 @@ create table products (
         primary key (productID),
         foreign key (catID) references category (catID)
 );
+create table customer (
+       customerId integer not null auto_increment,
+       customerFirstName varchar (20),
+       customerLastName varchar (30),
+       customerAddress varchar (100),
+       customerCity varchar (20),
+       customerPostCode varchar (4),
+       customerEmail varchar (50),
+       primary key (customerId),
+       foreign key (orderId) reference order (orderId)
+);
+create table orders (
+      orderId integer not numm auto_increment,
+      orderQuantity integer (100),
+      orderPrice decimal (6,2),
+      primary key (orderId),
+      foreign key (customerId) reference customer (customerId)
+
+);
+
+
+
+
+
