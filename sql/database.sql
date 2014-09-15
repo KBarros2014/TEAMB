@@ -28,22 +28,39 @@ create table customer (
        customerPostCode varchar (4),
        customerEmail varchar (50),
        primary key (customerId),
-       foreign key (orderId) reference order (orderId)
+       -- (ML) syntax error on following line 
+       -- foreign key (orderId) reference order (orderId)
+       -- it should be
+		foreign key (orderId) references orders (orderId)
+		-- however should we really store an order ID on a customer?
+		-- What if a cuatomer has no orders? or many?
+       
 );
+
+
 create table orders (
       orderId integer not numm auto_increment,
       orderQuantity integer ,
       orderPrice decimal (6,2),
+-- (ML) field added (referred to in foreign key)
+	  customerId integer not null,
+      
       primary key (orderId),
-      foreign key (customerId) reference customer (customerId)
-
+-- (ML) syntax error corrected
+--      foreign key (customerId) reference customer (customerId)
+      foreign key (customerId) references customer (customerId)
+      
+-- (ML) I don't think price or quantity belongs here. Thst's for the order 
+--     details table (orderProduct in your design).
+--     However, things like order date, delivery information, etc do belong here
 );
 
 create table orderProduct (
 	  quantity integer,
 	  foreign key (productId) reference order (orderId)
 	  foreign key (orderId) reference order (
-
+--	This needs quite a lot more.
+--  At a minimum, an orderProductId and an orderid
 
 
 
