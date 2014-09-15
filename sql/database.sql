@@ -32,14 +32,22 @@ create table customer (
 );
 create table orders (
       orderId integer not numm auto_increment,
-      orderQuantity integer (100),
+      orderQuantity integer ,
       orderPrice decimal (6,2),
       primary key (orderId),
       foreign key (customerId) reference customer (customerId)
 
 );
 
+create table orderProduct (
+	  quantity integer,
+	  foreign key (productId) reference order (orderId)
+	  foreign key (orderId) reference order (
 
 
+
+
+
+);
 
 
