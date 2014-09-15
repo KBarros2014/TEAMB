@@ -68,3 +68,22 @@ create table orderProduct (
 );
 
 
+extra code for database structure---------------------
+create table Vistor (
+       customerId integer not null auto_increment,
+       VistorFirstName varchar (20),
+       VistorLastName varchar (30),
+       VistorPasswordVarchar (50),
+       VistorEmailAddress	Varchar(50),
+       
+);
+
+Create table Payment (
+	Payment_id	int (20),
+	Amount		int (50),
+	Payment_date	Varchar(50),
+	Late_update	(int 1);
+};
+
+
+
