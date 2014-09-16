@@ -33,7 +33,7 @@ create table customer (
        -- it should be
 		foreign key (orderId) references orders (orderId)
 		-- however should we really store an order ID on a customer?
-		-- What if a cuatomer has no orders? or many?
+		-- What if a customer has no orders? or many?
        
 );
 
