@@ -42,6 +42,7 @@ create table Orders (
       orderId integer not null auto_increment,
       orderQuantity integer ,
       orderPrice decimal (6,2),
+	  orderDate DATE (?),
 -- (ML) field added (referred to in foreign key)
 	  customerId integer not null,
       
@@ -60,8 +61,7 @@ create table orderProduct (
 	  orderPrice decimal (6,2),
 	  foreign key (prodcutId) reference product (prodcutId),
 	  foreign key (customerId) reference customer (customerId),
-	  foreign key (productId) reference order (orderId)
-	  foreign key (orderId) reference order (
+      foreign key (orderId) reference order (orderId),
 --	This needs quite a lot more.
 --  At a minimum, an orderProductId and an orderid
 
@@ -86,7 +86,12 @@ Create table Payment (
 	Amount		int (50),
 	Payment_date	Varchar(50),
 	Late_update	(int 1);
+	paymentType varchar (20),
 };
 
 
+create shipment (
+	//to be worked on
 
+
+)
