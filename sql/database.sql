@@ -2,7 +2,7 @@
 
 use TeamB;
 
-create table category (
+create table Category (
             catID integer not null auto_increment ,
             catName varchar(30),
             catPicture varchar(120),
@@ -10,7 +10,7 @@ create table category (
 );
 
 
-create table products (
+create table Products (
         productID integer not null auto_increment,
         productName varchar(30),
         productDescription  varchar(300),
@@ -19,7 +19,7 @@ create table products (
         primary key (productID),
         foreign key (catID) references category (catID)
 );
-create table customer (
+create table Customer (
        customerId integer not null auto_increment,
        customerFirstName varchar (20),
        customerLastName varchar (30),
@@ -38,8 +38,8 @@ create table customer (
 );
 
 
-create table orders (
-      orderId integer not numm auto_increment,
+create table Orders (
+      orderId integer not null auto_increment,
       orderQuantity integer ,
       orderPrice decimal (6,2),
 -- (ML) field added (referred to in foreign key)
@@ -57,6 +57,9 @@ create table orders (
 
 create table orderProduct (
 	  quantity integer,
+	  orderPrice decimal (6,2),
+	  foreign key (prodcutId) reference product (prodcutId),
+	  foreign key (customerId) reference customer (customerId),
 	  foreign key (productId) reference order (orderId)
 	  foreign key (orderId) reference order (
 --	This needs quite a lot more.
