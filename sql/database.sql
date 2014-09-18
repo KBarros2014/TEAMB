@@ -1,8 +1,6 @@
+use teamb;
 
-
-use TeamB;
-
-create table Category (
+create table category (
             catID integer not null auto_increment ,
             catName varchar(30),
             catPicture varchar(120),
@@ -10,7 +8,7 @@ create table Category (
 );
 
 
-create table Products (
+create table products (
         productID integer not null auto_increment,
         productName varchar(30),
         productDescription  varchar(300),
@@ -19,7 +17,7 @@ create table Products (
         primary key (productID),
         foreign key (catID) references category (catID)
 );
-create table Customer (
+create table customer (
        customerId integer not null auto_increment,
        customerFirstName varchar (20),
        customerLastName varchar (30),
@@ -27,43 +25,34 @@ create table Customer (
        customerCity varchar (20),
        customerPostCode varchar (4),
        customerEmail varchar (50),
-       primary key (customerId),
-       -- (ML) syntax error on following line 
-       -- foreign key (orderId) reference order (orderId)
-       -- it should be
-		foreign key (orderId) references orders (orderId)
-		-- however should we really store an order ID on a customer?
-		-- What if a customer has no orders? or many?
-       
+       primary key (customerId)
+    
+    
 );
 
 
-create table Orders (
+create table orders (
       orderId integer not null auto_increment,
       orderQuantity integer ,
       orderPrice decimal (6,2),
-	  orderDate DATE (?),
--- (ML) field added (referred to in foreign key)
+	  orderDate DATE ,
+
 	  customerId integer not null,
       
       primary key (orderId),
--- (ML) syntax error corrected
---      foreign key (customerId) reference customer (customerId)
+
       foreign key (customerId) references customer (customerId)
-      
--- (ML) I don't think price or quantity belongs here. Thst's for the order 
---     details table (orderProduct in your design).
---     However, things like order date, delivery information, etc do belong here
+
 );
 
 create table orderProduct (
 	  quantity integer,
+      orderId int,
+      productId int,
 	  orderPrice decimal (6,2),
-	  foreign key (prodcutId) reference product (prodcutId),
-	  foreign key (customerId) reference customer (customerId),
-      foreign key (orderId) reference order (orderId),
---	This needs quite a lot more.
---  At a minimum, an orderProductId and an orderid
+	  foreign key (productId) references products(productId),
+      foreign key (orderId) references orders (orderId)
+
 
 
 
@@ -71,27 +60,21 @@ create table orderProduct (
 );
 
 
-extra code for database structure---------------------
-create table Vistor (
-       customerId integer not null auto_increment,
-       VistorFirstName varchar (20),
-       VistorLastName varchar (30),
-       VistorPasswordVarchar (50),
-       VistorEmailAddress	Varchar(50),
-       
-);
+-- extra code for database structure---------------------
 
-Create table Payment (
+
+create table Payment (
 	Payment_id	int (20),
-	Amount		int (50),
-	Payment_date	Varchar(50),
-	Late_update	(int 1);
-	paymentType varchar (20),
+    custId int , 
+	Amount		decimal  (6, 2),
+	Payment_date	date ,
+	Lastupdate	date,
+	paymentType int  
 };
 
 
 create shipment (
-	//to be worked on
+	--to beworkde on
 
 
 )
