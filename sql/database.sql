@@ -3,8 +3,9 @@ use teamb;
 create table category (
             catID integer not null auto_increment ,
             catName varchar(30),
-            catPicture varchar(120),
+			-- I have removed catPic because it belongs to product Table
             primary key (catID)
+			
 );
 
 
@@ -12,7 +13,9 @@ create table products (
         productID integer not null auto_increment,
         productName varchar(30),
         productDescription  varchar(300),
-        productPrice decimal (6,2),                             -- nnnn.nn
+        productPrice decimal (6,2), 
+		productPic varchar (255),
+		-- nnnn.nn
         catID integer not null,
         primary key (productID),
         foreign key (catID) references category (catID)
