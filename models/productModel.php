@@ -106,15 +106,15 @@ class ProductModel extends AbstractModel {
 		$myPic = $this->productPic;
 		$myPrice =$this->producPrice;
 		if ($this->id===null) {
-			$sql="insert into people(productName, productDescription) values (".
-						"'$given', '$family')";
+			$sql="insert into products(productName, productDescription) values (".
+						"'$myProd', '$myDesc')";
 			$this->getDB()->execute($sql);
 			$this->id=getDB()->insertID();	
 		} else {
-			$sql="update people ".
-					"set givenName='$given', ".
-			            "familyName='$family' ".
-					"where personID= $personID";
+			$sql="update products ".
+					"set productName='$prod', ".
+			            "productDescription='$myDesc' ".
+					"where productID= $productID";
 			$this->getDB()->execute($sql);
 		}
 		$this->hasChanges=false;
