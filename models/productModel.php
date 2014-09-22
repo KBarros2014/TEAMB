@@ -79,16 +79,18 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
-		$sql="select givenName, familyName from people ".
-			 "where personID = $id";
+		$sql="select productName, productDescription from products ".
+			 "where productID = $id";
 		$rows=$this->getDB()->query($sql);
 		if (count($rows)!==0) {
-			throw new InvalidDataException("Person ID $id not found");
+			throw new InvalidDataException("Product ID $id not found");
 		}
 		$row=$rows[0];
-		$this->givenName=$row['givenName'];
-		$this->familyName=$row['familyName'];
-		$this->id=$id;
+		$this->productName=$row['productName'];
+		$this->productDescription=$row['productDescription'];
+		$this->producPrice= $row['producPrice'];
+		$this->productPic=$row['productPic'];
+		$this->productId=$id;
 		$this->changed=false;
 	}
 	
@@ -97,13 +99,14 @@ class ProductModel extends AbstractModel {
 		if ($this->productName==null || $this->productPrice==null) {
 			throw new InvalidDataException('Incomplete data');
 		}
-		
+	
 		// to be changed
-		$given=$this->givenName;
-		$family=$this->familyName;
-		
+		$myProd=$this->productName;
+		$myDesc=$this->productDescription;
+		$myPic = $this->productPic;
+		$myPrice =$this->producPrice;
 		if ($this->id===null) {
-			$sql="insert into people(givenName, fanilyName) values (".
+			$sql="insert into people(productName, productDescription) values (".
 						"'$given', '$family')";
 			$this->getDB()->execute($sql);
 			$this->id=getDB()->insertID();	
