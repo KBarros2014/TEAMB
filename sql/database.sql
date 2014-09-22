@@ -68,9 +68,9 @@ create table orderProduct (
 create table Payment (
 	paymentId not null,
     	paymentQuantity int (100);
-	Totalamount	decimal  (6, 2),
-	Payment_date	date,
-	Lastupdate	date,
+	totalamount	decimal  (6, 2),
+	paymentDate	date,
+	paymentType	varchar (10),
 	foreign key (paymentId) references orders (orderId)  
 };
 
