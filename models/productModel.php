@@ -47,7 +47,7 @@ class ProductModel extends AbstractModel {
 		if ($error!==null ){
 			throw new InvalidDataException($error);
 		}
-		$this->givenName=$value;
+		$this->productName=$value;
 		$this->changed=true;
 	}
 	public function getProductPrice() {
