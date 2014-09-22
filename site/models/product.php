@@ -23,7 +23,7 @@ class ProductModel extends AbstractModel {
 	*/
 	
 	
-	public function __construct($db, $productId=null) //, $productName=null, $productPrice=null, $productPic=null) {
+	public function __construct($db, $productId=null) { //, $productName=null, $productPrice=null, $productPic=null) {
 		parent::__construct($db);
 		$this->productId=$productId;
 		//$this->setProductName= ($productName);
