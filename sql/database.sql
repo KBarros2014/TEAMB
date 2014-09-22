@@ -1,4 +1,5 @@
-use teamb;
+--use teamb;
+--
 
 create table category (
             catID integer not null auto_increment ,
