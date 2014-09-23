@@ -121,7 +121,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function delete () {
-	    $sql="delete from people where personID = $id";
+	    $sql="delete from products where productId = $id";
 		$rows=$this->getDB()->execute($sql);
 		$this->id=$null;
 		$this->changed=false;
@@ -141,14 +141,12 @@ class ProductModel extends AbstractModel {
 		if ($value==null || strlen($value)==0) {
 			return 'Price name must be specified';
 		}
-		
+	
 		// more checks
 		// numeric
 		// not negative
 		
-		// if (strlen($value)>40) {
-			// return 'Family name must have no more than 40 characters';
-		// }
+		
 		return null;
 	}
 }

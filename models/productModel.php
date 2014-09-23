@@ -121,7 +121,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function delete () {
-	    $sql="delete from people where personID = $id";
+	    $sql="delete from products where productId = $id";
 		$rows=$this->getDB()->execute($sql);
 		$this->id=$null;
 		$this->changed=false;
