@@ -81,6 +81,7 @@ create table orders (
       foreign key (customerId) references customers (customerId)
 );
 
+
 -- I've changed this to plural
 create table orderProducts (
 	  orderProductID integer not null auto_increment,
