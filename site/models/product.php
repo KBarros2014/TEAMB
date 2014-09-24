@@ -95,7 +95,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function save() {
-		$id=$this->id;
+		$id=$this->productId;
 		if ($this->productName==null || $this->productPrice==null) {
 			throw new InvalidDataException('Incomplete data');
 		}

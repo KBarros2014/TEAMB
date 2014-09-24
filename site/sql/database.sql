@@ -48,7 +48,9 @@ insert into users (name, email, pwCheck, dateCreated, lastLogin)
 			values ('Mike Lopez','mike.lopez@cpit.ac.nz','5000$1AGp0JbYCJWcH9ng$oKpRQEO9vkPVkPQTiOuF9DhV0aUaPjopKPcXo6Ic0d/','2014-08-01',null);
 insert into users (name, email, pwCheck, dateCreated, lastLogin) 
 			values ('Mike Lance','lancem@cpit.ac.nz','5000$w0dIUsUZWFB5eJ5f$B/FN5Z2Rwx5MKVuB0LkM29KM6F8LqsrlXJTg61sEtE8','2014-08-02',null);
-create table administrators (userID int not null auto_increment, primary key (userID));
+
+			
+			create table administrators (userID int not null auto_increment, primary key (userID));
 insert into administrators (userID) values (1);
 
 -- I've changed this to plural

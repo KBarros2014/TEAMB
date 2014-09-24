@@ -17,7 +17,7 @@ class CustomerModel extends AbstractModel {
 		$this->customerId=$customerId;
 		$this->changed = false;
 		if ($customerId !== null) {
-			load (customerID);
+			load (customerId);
 		}
 		
 	}
@@ -103,7 +103,7 @@ class CustomerModel extends AbstractModel {
 	}
 	
 	public function save() {
-		$id=$this->id;
+		$id=$this->customerId;
 		if ($this->customerFirstName==null || $this->customerLastName==null|| $this->customerAddress==null || $this->customerEmail==null) {
 			throw new InvalidDataException('Incomplete data');
 		}
