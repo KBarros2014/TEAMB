@@ -62,13 +62,13 @@ create table customers (
        customerCity varchar (20),
        customerPostCode varchar (4),
        customerEmail varchar (50),
-       isBusinessAccount Varchar(1),
+       isBusinessAccount Varchar(5),
        primary key (customerId)    
 );
 
 insert into customers (customerFirstName,customerLastName,
-                       customerAddress,customerCity,customerPostCode,customerEmail) 
-	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com');
+                       customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) 
+	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com','yes');
 
 -- orders table
 -- I've deleted order quamtity and price
