@@ -1,0 +1,19 @@
+{ 
+	"name": "Set up people table in database with errors",
+	"author": "Stephen Reynolds",
+	"setupSQL": ["drop table if exists customer;",
+  "create table customer (
+       customerId integer not null auto_increment,
+       customerFirstName varchar (20),
+       customerLastName varchar (30),
+       customerAddress varchar (100),
+       customerCity varchar (20),
+       customerPostCode varchar (4),
+       customerEmail varchar (50),
+       isBusinessAccount Varchar(1),			
+       primary key (customerId)
+   );"
+    "insert into customer (customerFirstName,customerLastName,customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) values ('','Barros','','Christchurch','','wxyz@cpit.ac.nz','2');"
+    "insert into customer (customerFirstName,customerLastName,customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) values ('Steve','','99 Tuam St','','8041','','Y');"
+    ]
+}
