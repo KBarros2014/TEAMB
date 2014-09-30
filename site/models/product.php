@@ -79,6 +79,9 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
+	if (!is_int($id) && !ctype_digit($id)) {
+			throw new InvalidDataException("Invalid product ID ($id)");
+		}
 		$sql="select productName, productDescription from products ".
 			 "where productID = $id";
 		$rows=$this->getDB()->query($sql);
