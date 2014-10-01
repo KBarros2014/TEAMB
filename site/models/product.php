@@ -79,6 +79,9 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
+	//if (!is_int($id) && !ctype_digit($id)) {
+		//	throw new InvalidDataException("Invalid product ID ($id)");
+		//}
 		$sql="select productName, productDescription from products ".
 			 "where productID = $id";
 		$rows=$this->getDB()->query($sql);
@@ -95,12 +98,13 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function save() {
-		$id=$this->id;
+		$id=$this->productId;
 		if ($this->productName==null || $this->productPrice==null) {
 			throw new InvalidDataException('Incomplete data');
 		}
 	
 		// to be changed
+		$db =$this->getDB();
 		$myProd=$this->productName;
 		$myDesc=$this->productDescription;
 		$myPic = $this->productPic;
@@ -138,7 +142,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public static function errorInProductPrice($value) {
-		if ($value==null || strlen($value)==0) {
+		if ($value==null || strlen($value)==0 ||$value < 0 ||is_string($value) ) {
 			return 'Price name must be specified';
 		}
 	

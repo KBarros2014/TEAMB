@@ -23,16 +23,14 @@ class ProductModel extends AbstractModel {
 	*/
 	
 	
-
-	public function __construct($db, $productId=null) { //, $productName=null, $productPrice=null, $productPic=null) {
-
+	public function __construct($db, $productId=null)  {
 		parent::__construct($db);
 		$this->productId=$productId;
 		//$this->setProductName= ($productName);
 		//$this->setProductPrice($productPrice);
 		$this->changed = false;
 		if ($productId !== null) {
-			load (productID);
+			$this->load ($productId);
 		}
 		
 	}
@@ -81,7 +79,10 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
-		$sql="select productName, productDescription from products ".
+	if (!is_int($id) && !ctype_digit($id)) {
+			throw new InvalidDataException("Invalid product ID ($id)");
+		}
+		$sql="select productName, productDescription, productPrice from products ".
 			 "where productID = $id";
 		$rows=$this->getDB()->query($sql);
 		if (count($rows)!==0) {
@@ -97,12 +98,12 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function save() {
-		$id=$this->id;
+		$id=$this->productId;
 		if ($this->productName==null || $this->productPrice==null) {
 			throw new InvalidDataException('Incomplete data');
 		}
 	
-		// to be changed
+		$db=$this->getDB();
 		$myProd=$this->productName;
 		$myDesc=$this->productDescription;
 		$myPic = $this->productPic;
@@ -143,14 +144,12 @@ class ProductModel extends AbstractModel {
 		if ($value==null || strlen($value)==0) {
 			return 'Price name must be specified';
 		}
-		
+	
 		// more checks
 		// numeric
 		// not negative
 		
-		// if (strlen($value)>40) {
-			// return 'Family name must have no more than 40 characters';
-		// }
+		
 		return null;
 	}
 }

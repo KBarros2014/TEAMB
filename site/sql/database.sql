@@ -48,7 +48,9 @@ insert into users (name, email, pwCheck, dateCreated, lastLogin)
 			values ('Mike Lopez','mike.lopez@cpit.ac.nz','5000$1AGp0JbYCJWcH9ng$oKpRQEO9vkPVkPQTiOuF9DhV0aUaPjopKPcXo6Ic0d/','2014-08-01',null);
 insert into users (name, email, pwCheck, dateCreated, lastLogin) 
 			values ('Mike Lance','lancem@cpit.ac.nz','5000$w0dIUsUZWFB5eJ5f$B/FN5Z2Rwx5MKVuB0LkM29KM6F8LqsrlXJTg61sEtE8','2014-08-02',null);
-create table administrators (userID int not null auto_increment, primary key (userID));
+
+			
+			create table administrators (userID int not null auto_increment, primary key (userID));
 insert into administrators (userID) values (1);
 
 -- I've changed this to plural
@@ -60,12 +62,13 @@ create table customers (
        customerCity varchar (20),
        customerPostCode varchar (4),
        customerEmail varchar (50),
+       isBusinessAccount Varchar(5),
        primary key (customerId)    
 );
 
 insert into customers (customerFirstName,customerLastName,
-                       customerAddress,customerCity,customerPostCode,customerEmail) 
-	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com');
+                       customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) 
+	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com','yes');
 
 -- orders table
 -- I've deleted order quamtity and price
@@ -78,6 +81,7 @@ create table orders (
       primary key (orderId),
       foreign key (customerId) references customers (customerId)
 );
+
 
 -- I've changed this to plural
 create table orderProducts (

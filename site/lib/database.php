@@ -48,7 +48,7 @@ class Database implements IDatabase
 		}
 		return $count;
 	}
-	
+	 
 	public function getInsertID() {
 		return $this->conn->insert_id;
 	}
