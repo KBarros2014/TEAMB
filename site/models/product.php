@@ -30,7 +30,7 @@ class ProductModel extends AbstractModel {
 		//$this->setProductPrice($productPrice);
 		$this->changed = false;
 		if ($productId !== null) {
-			load (productID);
+			$this->load ($productId);
 		}
 		
 	}
@@ -79,51 +79,62 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
-	//if (!is_int($id) && !ctype_digit($id)) {
-		//	throw new InvalidDataException("Invalid product ID ($id)");
-		//}
-		$sql="select productName, productDescription from products ".
+	if (!is_int($id) && !ctype_digit($id)) {
+			throw new InvalidDataException("Invalid product ID ($id)");
+		}
+		$sql="select productName, productDescription, productPrice from products ".
 			 "where productID = $id";
 		$rows=$this->getDB()->query($sql);
-		if (count($rows)!==0) {
+		if (count($rows)!==1) {
 			throw new InvalidDataException("Product ID $id not found");
 		}
 		$row=$rows[0];
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
-		$this->producPrice= $row['producPrice'];
-		$this->productPic=$row['productPic'];
+		$this->producPrice= $row['productPrice'];
+		$this->productPic=$row['productPic'];//we do not have picutre 
 		$this->productId=$id;
 		$this->changed=false;
 	}
 	
 	public function save() {
-		$id=$this->productId;
-		if ($this->productName==null || $this->productPrice==null) {
-			throw new InvalidDataException('Incomplete data');
+		//$id=$this->productId;
+		if ($this->changed) {
+			if ($this->productName==null || $this->productPrice==null) {
+				throw new InvalidDataException('Incomplete data');
 		}
 	
-		// to be changed
-		$db =$this->getDB();
+		$db=$this->getDB();
+		$productId=$this->productId;
 		$myProd=$this->productName;
 		$myDesc=$this->productDescription;
 		$myPic = $this->productPic;
-		$myPrice =$this->producPrice;
-		if ($this->id===null) {
-			$sql="insert into products(productName, productDescription) values (".
-						"'$myProd', '$myDesc')";
+		$myPrice =$this->productPrice;
+	//	if ($this->id===null) {
+	if ($id === null) {
+			$sql="insert into products(productName, productDescription, productPrice) values (".
+						"'$myProd', '$myDesc', '$myPrice')";
 			$this->getDB()->execute($sql);
-			$this->id=getDB()->insertID();	
+			if ($affected !== 1) {
+					throw new InvalidDataException("Insert product failed");	}
+			$this->id=getDB()->insertID();
+		
 		} else {
 			$sql="update products ".
-					"set productName='$prod', ".
+					"set productName='$myProd', ".
 			            "productDescription='$myDesc' ".
-					"where productID= $productID";
-			$this->getDB()->execute($sql);
+						 "productPrice ='$myPrice' ".
+					"where productID= $id";
+				//"where productId= $myProd";
+				$this->getDB()->execute($sql);
+					if ($db->execute($sql) !== 1) {
+					throw new InvalidDataException("Update category failed");	
+				}
+			
 		}
 		$this->hasChanges=false;
 	}
-	
+	}
 	public function delete () {
 	    $sql="delete from products where productId = $id";
 		$rows=$this->getDB()->execute($sql);
@@ -142,7 +153,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public static function errorInProductPrice($value) {
-		if ($value==null || strlen($value)==0 ||$value < 0 ||is_string($value) ) {
+		if ($value==null || strlen($value)==0) {
 			return 'Price name must be specified';
 		}
 	
