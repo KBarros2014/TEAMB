@@ -4,8 +4,8 @@ class ProductModel extends AbstractModel {
 
 	private $productId;
 	private $productName=null;
-	//private $productPrice=null;
-	//private $prodPic=null;
+	private $productPrice=null;
+	private $prodPic=null;
 	private $changed;
 
 	/*
@@ -58,11 +58,11 @@ class ProductModel extends AbstractModel {
 		if ($error!==null ){
 			throw new InvalidDataException($error);
 		}
-		$this->producPrice=$value;
+		$this->prodPrice=$value;
 		$this->changed=true;
 	}
 	public function getProductPic() {
-		return $this->productPic;
+		return $this->prodPic;
 	}
 	
 	public function setProductPic($value) {
@@ -70,7 +70,7 @@ class ProductModel extends AbstractModel {
 		if ($error!==null ){
 			throw new InvalidDataException($error);
 		}
-		$this->producPic=$value;
+		$this->prodPic=$value;
 		$this->changed=true;
 	}
 	
@@ -91,8 +91,8 @@ class ProductModel extends AbstractModel {
 		$row=$rows[0];
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
-		$this->producPrice= $row['producPrice'];
-		$this->productPic=$row['productPic'];
+		$this->producPrice= $row['productPrice'];
+		$this->productPic=$row['prodPic'];
 		$this->productId=$id;
 		$this->changed=false;
 	}
@@ -107,8 +107,8 @@ class ProductModel extends AbstractModel {
 		$db =$this->getDB();
 		$myProd=$this->productName;
 		$myDesc=$this->productDescription;
-		$myPic = $this->productPic;
-		$myPrice =$this->producPrice;
+		$myPic = $this->prodPic;
+		$myPrice =$this->productPrice;
 		if ($this->id===null) {
 			$sql="insert into products(productName, productDescription) values (".
 						"'$myProd', '$myDesc')";
