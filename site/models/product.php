@@ -4,8 +4,8 @@ class ProductModel extends AbstractModel {
 
 	private $productId;
 	private $productName=null;
-	private $productPrice=null;
-	private $prodPic=null;
+	//private $productPrice=null;
+	//private $prodPic=null;
 	private $changed;
 
 	/*
