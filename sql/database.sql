@@ -1,4 +1,4 @@
---use teamb;
+use teamb;
 --Customer table store all registed customer,before registed the new ewgisted will compare current customer table database it has been registed or not, and then registed customer.
 --uniqe customer ID
 create table customer (

@@ -31,7 +31,7 @@ create table products (
         foreign key (catID) references categories (catID)
 );
 
-insert into products (productName, productDescription,productPrice,productPic,catID) 
+insert into products (productName, productDescription, productPrice, productPic, catID) 
     values ('Product one','Description of product one',123.45,null,1);
 
 create table users (
@@ -71,7 +71,7 @@ insert into customers (customerFirstName,customerLastName,
 	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com','yes');
 
 -- orders table
--- I've deleted order quamtity and price
+-- I've deleted order quantity and price
 create table orders (
       orderId integer not null auto_increment,
       orderQuantity integer,

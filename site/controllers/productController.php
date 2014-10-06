@@ -2,20 +2,20 @@
 /*
    A PHP framework for web sites by Mike Lopez
    
-   Sample CRUD controller for a product category
+   Sample CRUD controller for a product
    =============================================
 
    The following URI patterns are handled by this controller: 
    
-   /admin/category/new         	create a new category
-   /admin/category/edit/nn		edit category nn
-   /admin/category/delete/nn	delete category nn
-   /admin/category/view/nn      view category nn
+   /admin/product/new         	create a new product
+   /admin/Product/edit/nn		edit product nn
+   /admin/product/delete/nn	delete product nn
+   /admin/product/view/nn      view product nn
    
-   (nn is the category ID)
+   (nn is the product ID)
    
    Note that most of the logic is in the parent CRUD controller
-   Here, We're just implementing the category specific stuff
+   Here, We're just implementing the product specific stuff
 */
 
 include 'controllers/crudController.php';
@@ -50,8 +50,8 @@ class ProductController extends CrudController {
 	protected function getModelData($model) {
 		$this->setField('name', $model->getProductName());
 		$this->setField('description',$model->getproductDescription());		
-		$this->setField('price',$model->getproductPrice());		
-		$this->setField('picture',$model->getproductPic());		
+		//$this->setField('price',$model->getproductPrice());		
+		//$this->setField('picture',$model->getproductPic());		
 	}
 	protected function getFormData() {
 		$name=$this->getInput('name');
