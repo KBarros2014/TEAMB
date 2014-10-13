@@ -49,9 +49,9 @@ class ProductController extends CrudController {
 	}
 	protected function getModelData($model) {
 		$this->setField('name', $model->getProductName());
-		$this->setField('description',$model->getproductDescription());		
-		//$this->setField('price',$model->getproductPrice());		
-		//$this->setField('picture',$model->getproductPic());		
+		//$this->setField('description',$model->productDescription());		
+		$this->setField('price',$model->getproductPrice());		
+		$this->setField('picture',$model->getproductPic());		
 	}
 	protected function getFormData() {
 		$name=$this->getInput('name');
@@ -62,7 +62,7 @@ class ProductController extends CrudController {
 		}
 		$description=$this->getInput('description');
 		$this->setField('description', $description);
-		$error=ProductModel::errorInProductDescription($description);
+		//$error=ProductModel::errorInproductDescription($description);
 		if ($error!==null) {
 			$this->setError ('description',$error);
 		} 
@@ -71,7 +71,7 @@ class ProductController extends CrudController {
 		$name=$this->getField('name');
 		$description=$this->getField('description');
 		
-		$model->setName($name);
+		$model->setName($ProductName);
 		$model->setDescription($description);	
 		$model->save();
 		$this->redirectTo('admin/products',"Product '$name' has been saved");

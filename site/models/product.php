@@ -39,7 +39,7 @@ class ProductModel extends AbstractModel {
 		return $this->productId;
 	}
 	public function getProductName() {
-		return $this->productName;
+		return $this->productName; 
 	}
 	
 	public function setProductName($value) {
@@ -92,11 +92,8 @@ class ProductModel extends AbstractModel {
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
 		$this->producPrice= $row['productPrice'];
-<<<<<<< HEAD
-		$this->productPic=$row['productPic'];//we do not have picutre 
-=======
-		$this->productPic=$row['prodPic'];
->>>>>>> origin/testing
+		//$this->productPic=$row['productPic'];//we do not have picutre 
+		//$this->productPic=$row['prodPic'];
 		$this->productId=$id;
 		$this->changed=false;
 	}
@@ -112,20 +109,18 @@ class ProductModel extends AbstractModel {
 		$productId=$this->productId;
 		$myProd=$this->productName;
 		$myDesc=$this->productDescription;
-<<<<<<< HEAD
 		$myPic = $this->productPic;
 		$myPrice =$this->productPrice;
 	//	if ($this->id===null) {
 	if ($id === null) {
 			$sql="insert into products(productName, productDescription, productPrice) values (".
 						"'$myProd', '$myDesc', '$myPrice')";
-=======
+
 		$myPic = $this->prodPic;
 		$myPrice =$this->productPrice;
 		if ($this->id===null) {
 			$sql="insert into products(productName, productDescription) values (".
 						"'$myProd', '$myDesc')";
->>>>>>> origin/testing
 			$this->getDB()->execute($sql);
 			if ($affected !== 1) {
 					throw new InvalidDataException("Insert product failed");	}
@@ -140,14 +135,14 @@ class ProductModel extends AbstractModel {
 				//"where productId= $myProd";
 				$this->getDB()->execute($sql);
 					if ($db->execute($sql) !== 1) {
-					throw new InvalidDataException("Update category failed");	
+					throw new InvalidDataException("Update category failed");
 				}
 			
 		}
 		$this->hasChanges=false;
 	}
 	}
-	public function delete () {
+	//public function delete ()	{
 	    $sql="delete from products where productId = $id";
 		$rows=$this->getDB()->execute($sql);
 		$this->id=$null;
