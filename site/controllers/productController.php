@@ -34,8 +34,6 @@ class ProductController extends CrudController {
 
 	// the following methods are the must-overrides in the Crud controller
 	protected function getTemplateForNew () {
-		$categories = CategoryModel::getAll();
-		die('<pre>'.print_r($categories, true));
 		return 'html/forms/adminProductNew.html'; 
 	}
 	protected function getTemplateForEdit () {
@@ -51,10 +49,11 @@ class ProductController extends CrudController {
 		return new ProductModel($this->getDB(),$id);
 	}
 	protected function getModelData($model) {
+		$category_model = new CategoryModel($this->getDB(), $model->getCategoryID());
 		$this->setField('name', $model->getProductName());
 		$this->setField('description',$model->getProductDescription());		
 		$this->setField('price',$model->getproductPrice());		
-		// /$this->setField('picture',$model->getproductPic());		
+		$this->setField('category',$category_model->getName());		
 	}
 	protected function getFormData() {
 		$name = $this->getInput('name');
