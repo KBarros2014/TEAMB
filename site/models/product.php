@@ -53,12 +53,24 @@ class ProductModel extends AbstractModel {
 	public function getProductPrice() {
 		return $this->productPrice;
 	}
+	public function getProductDescription() {
+		return $this->productDescription;
+	}
 	public function setProductPrice($value) {
 		$error=$this->errorInProductPrice($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
 		}
 		$this->prodPrice=$value;
+		$this->changed=true;
+	}
+
+	public function setProductDescription($value) {
+		$error=$this->errorInProductDescription($value);
+		if ($error!==null ){
+			throw new InvalidDataException($error);
+		}
+		$this->prodDescription=$value;
 		$this->changed=true;
 	}
 	public function getProductPic() {
@@ -79,7 +91,7 @@ class ProductModel extends AbstractModel {
 	}
 	
 	private function load($id) {
-	if (!is_int($id) && !ctype_digit($id)) {
+		if (!is_int($id) && !ctype_digit($id)) {
 			throw new InvalidDataException("Invalid product ID ($id)");
 		}
 		$sql="select productName, productDescription, productPrice from products ".
@@ -91,7 +103,7 @@ class ProductModel extends AbstractModel {
 		$row=$rows[0];
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
-		$this->producPrice= $row['productPrice'];
+		$this->productPrice= $row['productPrice'];
 		//$this->productPic=$row['productPic'];//we do not have picutre 
 		//$this->productPic=$row['prodPic'];
 		$this->productId=$id;
@@ -158,10 +170,17 @@ class ProductModel extends AbstractModel {
 		}
 		return null;
 	}
+
+	public static function errorInProductDescription($value) {
+		if ($value==null || strlen($value)==0) {
+			return 'Product description must be specified';
+		}
+		return null;
+	}
 	
 	public static function errorInProductPrice($value) {
 		if ($value==null || strlen($value)==0) {
-			return 'Price name must be specified';
+			return 'Product price must be specified';
 		}
 	
 		// more checks
@@ -170,6 +189,17 @@ class ProductModel extends AbstractModel {
 		
 		
 		return null;
+	}
+
+	public function delete () {
+		if ($this->productId===null) {
+			throw new LogicException('Cannot delete null id');
+		}
+	    $sql='delete from products where productID = '.$this->productId;
+		if ($this->getDB()->execute($sql) !== 1) {
+			throw new LogicException('Product delete failed for id '.$this->productId);
+		}
+		//$this->init();	
 	}
 }
 ?>

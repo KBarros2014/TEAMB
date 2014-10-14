@@ -33,6 +33,7 @@ class CategoryController extends CrudController {
 	
 	// the following methods are the must-overrides in the Crud controller
 	protected function getTemplateForNew () {
+		CategoryModel::getAll();
 		return 'html/forms/adminCategoryNew.html';
 	}
 	protected function getTemplateForEdit () {

@@ -52,6 +52,18 @@ class CategoryModel extends AbstractModel {
 		$this->id=$id;
 		$this->changed=false;
 	}
+
+	public function getAll(){
+		die('<pre>'.print_r($db, true));
+		$sql="select * from categories";
+		$rows=$this->getDB()->query($sql);
+		if (count($rows)!==1) {
+			throw new InvalidDataException("No categories found.");
+		}
+
+		return $rows;
+	}
+	
 	public function getID() {
 		return $this->id;
 	}
