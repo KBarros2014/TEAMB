@@ -49,11 +49,17 @@ class ProductTest extends UnitTest {
    		$this->assertEqual($product->getName(),'Product 1',"Product one name");
    		$this->assertEqual($product->getProductPrice(),'453.21',"Product  1 price");
         
+        $product=new ProductModel($db);
+        $this->assertEqual($product->getProductID(),null,"Default id should be null");
+    	$product->setProductName('Product two');
+   		$product->setProductPrice('987.65');
+   		$this->assertEqual($product->getName(),'Product two',"Product two name");
+   		$this->assertEqual($product->getProductPrice(),'987.65',"Product two price");
         
-        
-
+        $this->save();
+        $this->assertEqual($product->getProductID(),2,"ID should now be 2");
+		
         //this->assertEqual($product-getProductID()
-
         /*
         getProductName
         setProductName
