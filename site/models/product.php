@@ -4,6 +4,7 @@ class ProductModel extends AbstractModel {
 
 	private $productId;
 	private $productName=null;
+	private $productDescription = null;
 	private $productPrice=null;
 	private $prodPic=null;
 	private $categoryID = null;
@@ -178,6 +179,14 @@ class ProductModel extends AbstractModel {
 		if (strlen($value)>30) {
 			return 'errorInProductName name must have no more than 30 characters';
 		}
+		return null;
+	}
+
+	public static function errorInProductDescription($value) {
+		if ($value==null || strlen($value)==0) {
+			return 'Product description must be specified';
+		}
+		
 		return null;
 	}
 
