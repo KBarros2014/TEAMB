@@ -20,6 +20,7 @@
 
 include 'controllers/crudController.php';
 include 'models/product.php'; 
+include 'models/category.php'; 
 
 class ProductController extends CrudController {
 
@@ -48,36 +49,47 @@ class ProductController extends CrudController {
 		return new ProductModel($this->getDB(),$id);
 	}
 	protected function getModelData($model) {
+		$category_model = new CategoryModel($this->getDB(), $model->getCategoryID());
 		$this->setField('name', $model->getProductName());
-		//$this->setField('description',$model->productDescription());		
+		$this->setField('description',$model->getProductDescription());		
 		$this->setField('price',$model->getproductPrice());		
-		$this->setField('picture',$model->getproductPic());		
+		$this->setField('category',$category_model->getName());		
 	}
 	protected function getFormData() {
-		$name=$this->getInput('name');
+		$name = $this->getInput('name');
 		$this->setField('name', $name);
-		$error=ProductModel::errorInProductName($name);
-		if ($error!==null) {
+		$error = ProductModel::errorInProductName($name);
+		if ($error !== null) {
 			$this->setError ('name',$error);
 		}
-		$description=$this->getInput('description');
+		
+		$description = $this->getInput('description');
 		$this->setField('description', $description);
-		//$error=ProductModel::errorInproductDescription($description);
+		/*$error = ProductModel::errorInproductDescription($description);
 		if ($error!==null) {
 			$this->setError ('description',$error);
+		} */
+
+		$price = $this->getInput('price');
+		$this->setField('price', $price);
+		$error = ProductModel::errorInproductPrice($price);
+		if ($error !== null) {
+			$this->setError ('price',$error);
 		} 
 	}
 	protected function updateModel($model) {
-		$name=$this->getField('name');
-		$description=$this->getField('description');
+		$name = $this->getField('name');
+		$description = $this->getField('description');
+		$price = $this->getField('price');
 		
-		$model->setName($ProductName);
-		$model->setDescription($description);	
+		$model->setProductName($name);
+		$model->setProductDescription($description);	
+		$model->setProductPrice($price);	
 		$model->save();
 		$this->redirectTo('admin/products',"Product '$name' has been saved");
 	}
 	protected function deleteModel($model) {
-		$name=$model->getName();
+		$name=$model->getProductName();
 		$model->delete();
 		$this->redirectTo('admin/products',"Product '$name' has been deleted");
 	}	
