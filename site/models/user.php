@@ -13,6 +13,8 @@ class User {
 	private $isAdmin;		// lazy boolean
 	private $dateCreated; 	// stored as unix timestamp
 	private $lastLogin;  	// stored as unix timestamp
+        
+    private $CSRFToken = null; //Cross Site Request Forgery Token
 	
 	public function __construct ($context){
 		$this->db=$context->getDB();
@@ -148,5 +150,12 @@ class User {
 		// let crypt do the heavy lifting
 		return crypt($input,'$5$rounds=5000$'.$salt);
 	}	
+    
+    //https://www.owasp.org/index.php/PHP_CSRF_Guard
+    private function CSRFGenerate(){}
+    private function CSRFCheck($crsfToken){}
+    
+    public function getCSRFToken(){}
+    
 }
 ?>

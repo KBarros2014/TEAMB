@@ -1,6 +1,7 @@
 <?php
 //kB
-class CustomerModel extends AbstractModel {
+
+class CustomerModel extends AbstractModel{
 
 	private $customerId;
 	private $customerFirstName=null;
