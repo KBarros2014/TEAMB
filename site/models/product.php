@@ -4,18 +4,9 @@ class ProductModel extends AbstractModel {
 
 	private $productId;
 	private $productName=null;
-<<<<<<< HEAD
-	private $productDescription = null;
-=======
 	private $productDescription= null;
->>>>>>> origin/testing
 	private $productPrice=null;
-<<<<<<< HEAD
 	private $productPic=null;
-=======
-	private $prodPic=null;
-	private $categoryID = null;
->>>>>>> origin/testing
 	private $changed;
 	private $CatID = null;
 	/*
@@ -32,15 +23,12 @@ class ProductModel extends AbstractModel {
 		
 	*/
 	
-<<<<<<< HEAD
 	
 	public function __construct($db, $productId=null)  { //another field to be inserted here I will work on it after holiday
-=======
-	public function __construct($db, $productId=null)  {
->>>>>>> origin/testing
 		parent::__construct($db);
 		$this->productId=$productId;
-
+		//$this->setProductName= ($productName);
+		//$this->setProductPrice($productPrice);
 		$this->changed = false;
 		if ($productId !== null) {
 			$this->load ($productId);
@@ -64,19 +52,11 @@ class ProductModel extends AbstractModel {
 		$this->productName=$value;
 		$this->changed=true;
 	}
-<<<<<<< HEAD
 	
 	public function getProductPrice() {
 		return $this->productPrice;
 	}
 	
-=======
-
-	public function getProductPrice() {
-		return $this->productPrice;
-	}
-
->>>>>>> origin/testing
 	public function setProductPrice($value) {
 		$error=$this->errorInProductPrice($value);
 		if ($error!==null ){
@@ -85,24 +65,7 @@ class ProductModel extends AbstractModel {
 		$this->productPrice=$value;
 		$this->changed=true;
 	}
-<<<<<<< HEAD
 	
-=======
-
-	public function getProductDescription() {
-		return $this->productDescription;
-	}
-	
-	public function setProductDescription($value) {
-		$error=$this->errorInProductDescription($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
-		}
-		$this->prodDescription=$value;
-		$this->changed=true;
-	}
-
->>>>>>> origin/testing
 	public function getProductPic() {
 		return $this->productPic;
 	}
@@ -115,24 +78,10 @@ class ProductModel extends AbstractModel {
 		$this->prodPict=$value;
 		$this->changed=true;
 	}
-
-	public function getCategoryID() {
-		return $this->categoryID;
-	}
-	
-	public function setCategoryID($value) {
-		$error = $this->errorInProductCatID($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
-		}
-		$this->categoryID=$value;
-		$this->changed=true;
-	}
 	
 	public function hasChanges() {
 		return $this->changed;
 	}
-<<<<<<< HEAD
 	  
 	private function load($productId) {
 	if (!is_int($productId) && !ctype_digit($productId)) {
@@ -140,15 +89,6 @@ class ProductModel extends AbstractModel {
 		}
 		$sql="select productName, productDescription, productPrice, productPic from products ".
 			 "where productID = $productId";
-=======
-	
-	private function load($id) {
-		if (!is_int($id) && !ctype_digit($id)) {
-			throw new InvalidDataException("Invalid product ID ($id)");
-		}
-		$sql="select * from products ".
-			 "where productID = $id";
->>>>>>> origin/testing
 		$rows=$this->getDB()->query($sql);
 		//echo $rows;
 		
@@ -159,7 +99,6 @@ class ProductModel extends AbstractModel {
 		$row=$rows[0];
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
-<<<<<<< HEAD
 		$this->producPrice= $row['productPrice'];  
 		$this->productPic=$row['productPic'];//we do not have picutre 
 		$this->productId=$productId;
@@ -167,15 +106,6 @@ class ProductModel extends AbstractModel {
 	}
 	
 	public function save() {//save function to be perfected here // to be added more conditions on the contruct
-=======
-		$this->productPrice= $row['productPrice'];
-		$this->categoryID= $row['catID'];
-		$this->productId=$id;
-		$this->changed=false;
-	}
-	
-	public function save() {
->>>>>>> origin/testing
 		if ($this->changed) {
 		              if ($this->productName==null || $this->productPrice==null || $this->productDescription==null) {
 				throw new InvalidDataException("Incomplete data Hi it s me testing again make sure you select cat");
@@ -184,7 +114,6 @@ class ProductModel extends AbstractModel {
 	    $db=$this->getDB();
 		
 		$productId=$this->productId;
-<<<<<<< HEAD
 		$productName=$this->productName;
 		$productDescription=$this->productDescription;
 		$productPic =$this->productPic;
@@ -210,43 +139,8 @@ class ProductModel extends AbstractModel {
 					if ($db->execute($sql) !== 1) {
 					throw new InvalidDataException("Update product failed");	
 				}
-=======
-		$myProd=$this->productName;
-		$myDesc=$this->productDescription;
-		$myPic = $this->productPic;
-		$myPrice =$this->productPrice;
-
-		if ($id === null) {
-				$sql="insert into products(productName, productDescription, productPrice) values (".
-							"'$myProd', '$myDesc', '$myPrice')";
-
-			$myPic = $this->prodPic;
-			$myPrice =$this->productPrice;
-			if ($this->id===null) {
-				$sql="insert into products(productName, productDescription) values (".
-							"'$myProd', '$myDesc')";
-				$this->getDB()->execute($sql);
-				if ($affected !== 1) {
-						throw new InvalidDataException("Insert product failed");	}
-				$this->id=getDB()->insertID();
->>>>>>> origin/testing
 			
-			} else {
-				$sql="update products ".
-						"set productName='$myProd', ".
-				            "productDescription='$myDesc' ".
-							 "productPrice ='$myPrice' ".
-						"where productID= $id";
-					//"where productId= $myProd";
-					$this->getDB()->execute($sql);
-						if ($db->execute($sql) !== 1) {
-						throw new InvalidDataException("Update category failed");
-					}
-				
-			}
-			$this->hasChanges=false;
 		}
-<<<<<<< HEAD
 		$this->hasChanges=false;
 		//$this->changed =false;
 		
@@ -260,9 +154,6 @@ class ProductModel extends AbstractModel {
 		$rows=$this->getDB()->execute($sql);
 		$this->id=$null;
 		$this->changed=false;
-=======
-	}
->>>>>>> origin/testing
 	}
 
 	public static function errorInProductName($value) {
@@ -274,15 +165,7 @@ class ProductModel extends AbstractModel {
 		}
 		return null;
 	}
-
-	public static function errorInProductDescription($value) {
-		if ($value==null || strlen($value)==0) {
-			return 'Product description must be specified';
-		}
-		
-		return null;
-	}
-
+	
 	public static function errorInProductPrice($value) {
 		if ($value== null) {
 			return 'Price must be specified';
@@ -322,37 +205,15 @@ class ProductModel extends AbstractModel {
 	
 	public static function errorInProductDescription($value) {//irrelevant  kb
 		if ($value==null || strlen($value)==0) {
-<<<<<<< HEAD
 			return 'desc name must be specified';
 		}
 	
       if ($value <0){
 	  return "not negative number";
 	  }
-=======
-			return 'Product price must be specified';
-		}
->>>>>>> origin/testing
+		
 		
 		return null;
-	}
-
-	public static function errorInProductCatID($value) {
-		if ($value==null || strlen($value)==0) {
-			return 'Product category must be specified';
-		}
-		
-		return null;
-	}
-
-	public function delete () {
-		if ($this->productId===null) {
-			throw new LogicException('Cannot delete null id');
-		}
-	    $sql='delete from products where productID = '.$this->productId;
-		if ($this->getDB()->execute($sql) !== 1) {
-			throw new LogicException('Product delete failed for id '.$this->productId);
-		}	
 	}
 }
 ?>
