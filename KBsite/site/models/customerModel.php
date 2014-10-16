@@ -1,32 +1,32 @@
 <?php
 //kB
-class CustomerModel extends AbstractModel {
-
-	private $customerId;
-	private $customerFirstName=null;
-	private $customerLastName=null;
+class CustomerModel extends User {
 	private $customerAddress = null;
 	private $customerCity = null;
 	private $customerPostCode =null;
-	private $customerEmail = null;
-	private $prodPic=null;
 	private $changed;
 
-	public function __construct($db, $customerId=null) {
-		parent::__construct($db);
-		$this->customerId=$customerId;
-		$this->changed = false;
-		if ($customerId !== null) {
-			load (customerId);
-		}
+	public function __construct(IDatabase $db, $uid=null) {
+		//parent::__construct($db);//removing previous inheritance parent
+		//public function __construct(IDatabase $db){//the abstract model constructor
+			$this->db=$db;  //here get the abstract model constructor
 		
-	}
 	
-	public function getCustomerId() {
-		return $this->customerId;
-	}
+		$this->changed = false;
+		if ($uid !== null) {
+			$this->load($uid);
+		}
+		}
+	
+	
+
+
 	public function getCustomerFirstName() {
 		return $this->customerFirstName;
+	}
+	public function getCustomerLastName(){
+		return $this->customerLastName;
+	
 	}
 	public function setCustomerFirstName($value) {
 		$error=$this->errorInCustomerFirstName($value);
@@ -34,6 +34,14 @@ class CustomerModel extends AbstractModel {
 			throw new InvalidDataException($error);
 		}
 		$this->customerFirstName=$value;
+		$this->changed=true;
+	}
+	public function setCustomerLastName($value) {
+		$error=$this->errorInCustomerLastName($value);
+		if ($error==null ){
+			throw new InvalidDataException($error);
+		}
+		$this->customerLastName=$value;
 		$this->changed=true;
 	}
 	public function getCustomerPostCode() {
@@ -47,18 +55,10 @@ class CustomerModel extends AbstractModel {
 		$this->customerPostCode=$value;
 		$this->changed=true;
 	}
-	public function getCustomerLastName() {
-		return $this->customerLastName;
-	}
-	public function setCustomerLastName($value) {
-		$error=$this->errorInCustomerLastName($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
-		}
-		$this->customerLastName=$value;
-		$this->changed=true;
-	}
+	
+	
 	public function getCustomerAddress() {
+	echo "hllo";//another tesr kb
 		return $this->customerAddress;
 	}
 	
@@ -86,19 +86,19 @@ class CustomerModel extends AbstractModel {
 		return $this->changed;
 	}
 	
-	private function load($id) {
+	private function load($uid) {
 		$sql="select customerFirstName, customerLastName, customerAddress, customerEmail  from customers ".
-			 "where customerId = $id";
+			 "where customerId = $customerId";
 		$rows=$this->getDB()->query($sql);
-		if (count($rows)!==0) {
-			throw new InvalidDataException("Customer ID $id not found");
+		if (count($rows)!==1) {
+			throw new InvalidDataException("Customer  ($customerId) not found");
 		}
 		$row=$rows[0];
 		$this->customerFirstName=$row['customerFirstName'];
 		$this->customerLastName=$row['customerLastName'];
 		$this->customerAddress=$row['customerAddress'];
 		$this->customerEmail=$row['customerEmail'];
-		$this->id=$id;
+		$this->customerId=$customerId;
 		$this->changed=false;
 	}
 	
@@ -107,8 +107,6 @@ class CustomerModel extends AbstractModel {
 		if ($this->customerFirstName==null || $this->customerLastName==null|| $this->customerAddress==null || $this->customerEmail==null) {
 			throw new InvalidDataException('Incomplete data');
 		}
-		
-
 		$firstName=$this->customerFirstName;
 		$lastName=$this->customerLastName;
 		$address=$this->customerAddress;
@@ -140,8 +138,37 @@ class CustomerModel extends AbstractModel {
 		$this->id=$null;
 		$this->changed=false;
 	}
+	//// this function below should ensure fields are entered kBarrs and I don t fix them now
+	//a get email address function should be implemented which s pretty stratig foward in customer controller
+	public static function errorInCustomerAddress($value) {
+		if ($value==null || strlen($value)==0) {
+			return 'Address must be specified';
+		}
+		if (strlen($value)>30) {
+			return 'error customer first Name name must have no more than 30 characters';
+		}
+		return null;
+	}
+	public static function errorInCustomerEmail($value) { //some checks to be implemented here kb
+		if ($value==null || strlen($value)==0) {
+			return 'Email must be specified';
+		}
+		if (strlen($value)>30) {
+			return 'error customer first Name name must have no more than 30 characters';
+		}
+		return null;
+	}
+	public static function errorInCustomerCity($value) {//some checks to be implemented here kb
+		if ($value==null || strlen($value)==0) {
+			return 'City must be specified';
+		}
+		if (strlen($value)>30) {
+			return 'custmoer city first Name name must have no more than 30 characters';
+		}
+		return null;
+	}
 	
-	public static function errorInCustomerFirstName($value) {
+	public static function errorInCustomerFirstName($value) {//some checks to be implemented here kb
 		if ($value==null || strlen($value)==0) {
 			return 'Product name must be specified';
 		}
@@ -150,14 +177,25 @@ class CustomerModel extends AbstractModel {
 		}
 		return null;
 	}
+	public static function errorInCustomerPostCode($value) {
 	
-	public static function errorInCustomerLasName($value) {
+		if ($value==null || strlen($value)==0) {
+			return 'code must be specified';
+		}
+		if (strlen($value)>30) {
+			return 'error customer first Name name must have no more than 30 characters';
+		}
+		return null;
+	}
+	
+	public static function errorInCustomerLastName($value) {
 		if ($value==null || strlen($value)==0) {
 			return 'Customer last name must be specified';
 		}
 		if (strlen($value)>30) {
-			return 'errorInCusomerLastname must have no more than 30 characters';
+			return 'error In CusomerLastname must have no more than 30 characters';
 		}
 		return null;
+	}
 	}
 ?>
