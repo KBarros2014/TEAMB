@@ -43,7 +43,14 @@ class ProductModel extends AbstractModel {
 	public function getProductName() {
 		return $this->productName;
 	}
+	public function setCategoryId($catId){
+	      $this->CatID =$catId;
 	
+	}
+	public function getCategoryId(){
+		return $this->CatID;
+	
+	}
 	public function setProductName($value) {
 		$error=$this->errorInProductName($value);
 		if ($error!==null ){
@@ -118,11 +125,11 @@ class ProductModel extends AbstractModel {
 		$productDescription=$this->productDescription;
 		$productPic =$this->productPic;
 		$productPrice= $this->productPrice;//lets see if breaks the code
-		$catID = $this->catID;
+		$catID = $this->CatID;
 			if ($productId === null) {
 				$sql="insert into products(productName, productDescription, productPrice, productPic,CatID) values (".
-						"'$productName', '$productDescription', '$productPrice','$productPic',1)" ;
-			
+						"'$productName', '$productDescription', '$productPrice','$productPic','$catID')" ;
+			echo $sql;
 		$affected=$db->execute($sql);
 		 echo $affected;
 			if ($affected !== 1) {
