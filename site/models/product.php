@@ -181,7 +181,10 @@ class ProductModel extends AbstractModel {
 		if ($value== null) {
 			return 'Price must be specified';
 		}
-		if ($value <0 || is_string($value)) {
+		if (!is_numeric($value)) {
+		return "must be a number please";
+		}
+		if ($value <0 )) {
 		return "No negative number no words please";
 		}
 		return null;
