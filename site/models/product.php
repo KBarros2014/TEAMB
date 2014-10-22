@@ -8,7 +8,7 @@ class ProductModel extends AbstractModel {
 	private $productPrice=null;
 	private $productPic=null;
 	private $changed;
-	private $CatID = null;
+	private $catID = null;
 	/*
 	
 	To create a new product ...
@@ -43,12 +43,16 @@ class ProductModel extends AbstractModel {
 	public function getProductName() {
 		return $this->productName;
 	}
-	public function setCategoryId($catId){
-	      $this->CatID =$catId;
-	
+	public function setCategoryId($value){
+	$error=$this->errorInProductCat($value);
+		if ($error!==null ){
+			throw new InvalidDataException($error);
+		}
+	    $this->catID =$value;
+		$this->changed=true;
 	}
 	public function getCategoryId(){
-		return $this->CatID;
+		return $this->catID;
 	
 	}
 	public function setProductName($value) {
@@ -82,7 +86,7 @@ class ProductModel extends AbstractModel {
 		if ($error!==null ){
 			throw new InvalidDataException($error);
 		}
-		$this->prodPict=$value;
+		$this->prodPic=$value;
 		$this->changed=true;
 	}
 	
@@ -114,7 +118,7 @@ class ProductModel extends AbstractModel {
 	
 	public function save() {//save function to be perfected here // to be added more conditions on the contruct
 		if ($this->changed) {
-		              if ($this->productName==null || $this->productPrice==null || $this->productDescription==null) {
+		              if ($this->productName==null || $this->productPrice==null || $this->productDescription==null ||$this->catID==null) {
 				throw new InvalidDataException("Incomplete data Hi it s me testing again make sure you select cat");
 		}
 		echo $this->productName." ".$this->productPrice;// just for checking where it breaks kb
@@ -125,9 +129,9 @@ class ProductModel extends AbstractModel {
 		$productDescription=$this->productDescription;
 		$productPic =$this->productPic;
 		$productPrice= $this->productPrice;//lets see if breaks the code
-		$catID = $this->CatID;
+		$catID = $this->catID;
 			if ($productId === null) {
-				$sql="insert into products(productName, productDescription, productPrice, productPic,CatID) values (".
+				$sql="insert into products(productName, productDescription, productPrice, productPic,catID) values (".
 						"'$productName', '$productDescription', '$productPrice','$productPic','$catID')" ;
 			echo $sql;
 		$affected=$db->execute($sql);
@@ -177,14 +181,14 @@ class ProductModel extends AbstractModel {
 		if ($value== null) {
 			return 'Price must be specified';
 		}
-		if ($value <0) {
-		return "error";
+		if ($value <0 || is_string($value)) {
+		return "No negative number no words please";
 		}
 		return null;
 		}
 	
 	public static function errorInProductPic($value) {
-		if ($value==null ) {
+		if ($value==null ) {// in the future we might need to check the extension of images 
 			return 'Picture  must be supplied';
 		}
 		return null;
@@ -203,7 +207,7 @@ class ProductModel extends AbstractModel {
 		return $this->productDescription;
 	}
 	
-	public static function errorInProductCat($value) {
+	public static function errorInProductCat($value) { 
 		if ($value==null) {
 			return 'Category  must be supplied';
 		}
