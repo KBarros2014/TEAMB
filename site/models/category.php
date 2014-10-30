@@ -52,18 +52,6 @@ class CategoryModel extends AbstractModel {
 		$this->id=$id;
 		$this->changed=false;
 	}
-
-	public function getAll(){
-		die('<pre>'.print_r($db, true));
-		$sql="select * from categories";
-		$rows=$this->getDB()->query($sql);
-		if (count($rows)!==1) {
-			throw new InvalidDataException("No categories found.");
-		}
-
-		return $rows;
-	}
-	
 	public function getID() {
 		return $this->id;
 	}
@@ -125,7 +113,7 @@ class CategoryModel extends AbstractModel {
 		if ($this->id===null) {
 			throw new LogicException('Cannot delete null id');
 		}
-	    $sql='delete from categories where catID = '.$this->id;;
+	    $sql='delete from categories where catID = '.$this->id;
 		if ($this->getDB()->execute($sql) !== 1) {
 			throw new LogicException('Category delete failed for id '.$this->id);
 		}

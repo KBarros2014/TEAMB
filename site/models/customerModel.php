@@ -1,7 +1,6 @@
 <?php
 //kB
-
-class CustomerModel extends AbstractModel{
+class CustomerModel extends  AbstractModel{
 
 	private $customerId;
 	private $customerFirstName=null;
@@ -30,6 +29,10 @@ class CustomerModel extends AbstractModel{
 	}
 	public function getCustomerLastName(){
 		return $this->customerLastName;
+	
+	}
+	public function getCustomerDetails(){
+		return $this->getCustomerFirstName()." ".$this->getCustomerLastName();
 	
 	}
 	public function setCustomerFirstName($value) {
@@ -142,7 +145,7 @@ class CustomerModel extends AbstractModel{
 		$this->id=$null;
 		$this->changed=false;
 	}
-	//// this function below should ensure fields are entered kBarrs and I don t fix them now
+	//// this functions below should ensure fields are entered kBarrs and I don t fix them now
 	//a get email address function should be implemented which s pretty stratig foward in customer controller
 	public static function errorInCustomerAddress($value) {
 		if ($value==null || strlen($value)==0) {

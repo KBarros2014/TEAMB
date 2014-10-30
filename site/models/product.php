@@ -181,10 +181,7 @@ class ProductModel extends AbstractModel {
 		if ($value== null) {
 			return 'Price must be specified';
 		}
-		if (!is_numeric($value)) {
-		return "must be a number please";
-		}
-		if ($value <0 )) {
+		if ($value <0) {
 		return "No negative number no words please";
 		}
 		return null;
@@ -216,7 +213,14 @@ class ProductModel extends AbstractModel {
 		}
 		return null;
 		}
-	
+	/*	public static function isExistingId($db,$id) {
+		if ($id==null){
+			return false;
+		}
+		if (!is_int($id) && !(ctype_digit($id))) {
+			return false;
+		}
+		*/
 	public static function errorInProductDescription($value) {//irrelevant  kb
 		if ($value==null || strlen($value)==0) {
 			return 'desc name must be specified';

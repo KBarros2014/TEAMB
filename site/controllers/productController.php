@@ -20,7 +20,6 @@
 
 include 'controllers/crudController.php';
 include 'models/product.php'; 
-include 'models/category.php'; 
 
 class ProductController extends CrudController {
 
@@ -49,44 +48,62 @@ class ProductController extends CrudController {
 		return new ProductModel($this->getDB(),$id);
 	}
 	protected function getModelData($model) {
-		$category_model = new CategoryModel($this->getDB(), $model->getCategoryID());
 		$this->setField('name', $model->getProductName());
-		$this->setField('description',$model->getProductDescription());		
-		$this->setField('price',$model->getproductPrice());		
-		$this->setField('category',$category_model->getName());		
+		$this->setField('description',$model->getProductDescription());	//	for the tests
+		$this->setField('price',$model->getProductPrice());		
+		$this->setField('picture',$model->getProductPic());	
+		$this->setField('catID', $model->getCategoryId());
 	}
 	protected function getFormData() {
-		$name = $this->getInput('name');
+		$price=$this->getInput('price');
+		$this->setField('price', $price);
+			$error=ProductModel::errorInProductPrice($price);
+		if ($error!==null) {
+			$this->setError ('price',$error);
+		}
+	
+		$name=$this->getInput('name');
 		$this->setField('name', $name);
-		$error = ProductModel::errorInProductName($name);
-		if ($error !== null) {
+		$error=ProductModel::errorInProductName($name);
+		if ($error!==null) {
 			$this->setError ('name',$error);
 		}
-		
-		$description = $this->getInput('description');
+		/*
+		The product controller should present the drop-down list and set the model's category to the one chosen by the user.
+ 
+        */
+		$catID=$this->getInput('catID');
+		$this->setField('catID', $catID);
+			//	echo $catID."hello world<br/>";//for test just to check html tag kb I thoug javascript forgont the post 
+        //  $catID =(int)$catID;
+		  		//var_dump($catID);
+				echo $catID;
+		$error=ProductModel::errorInProductCat($catID);
+		if ($error!==null) {
+			$this->setError ('catID',$error);
+
+		}
+		$description=$this->getInput('description');
 		$this->setField('description', $description);
-		/*$error = ProductModel::errorInproductDescription($description);
+		$error = ProductModel::errorInProductDescription($description);
 		if ($error!==null) {
 			$this->setError ('description',$error);
-		} */
-
-		$price = $this->getInput('price');
-		$this->setField('price', $price);
-		$error = ProductModel::errorInproductPrice($price);
-		if ($error !== null) {
-			$this->setError ('price',$error);
 		} 
+		return null;
 	}
 	protected function updateModel($model) {
-		$name = $this->getField('name');
-		$description = $this->getField('description');
-		$price = $this->getField('price');
-		
-		$model->setProductName($name);
-		$model->setProductDescription($description);	
-		$model->setProductPrice($price);	
+		$productName=$this->getField('name');//get infro from input boxes 
+		$description=$this->getField('description');
+		$productPrice=$this->getField('price');
+		$catID=$this->getField('catID');// for test get html data which is alist of categories ex technology furniture ect  
+		//$catID =(int)$catID; //categroy id is an integer kab transforms that options into integers
+		//var_dump($catID);//what type we got
+		$model->setProductName($productName);
+		$model->setProductPrice($productPrice);
+		$model->setDescription($description);
+		$model->setCategoryId($catID);
 		$model->save();
-		$this->redirectTo('admin/products',"Product '$name' has been saved");
+		$this->redirectTo('admin/products',"Product '$productName' has been saved");
 	}
 	protected function deleteModel($model) {
 		$name=$model->getProductName();
