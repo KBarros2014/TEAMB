@@ -62,7 +62,7 @@ create table customers (
        customerCity varchar (20),
        customerPostCode varchar (4),
        customerEmail varchar (50),
-       isBusinessAccount Varchar(5),
+       isBusinessAccount boolean,
        primary key (customerId)    
 );
 
