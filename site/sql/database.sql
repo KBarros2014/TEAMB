@@ -86,10 +86,12 @@ create table orders (
 -- I've changed this to plural
 create table orderProducts (
 	  orderProductID integer not null auto_increment,
-	  quantity integer,
-      orderId int,
-      productId int,
-	  orderPrice decimal (6,2),
+	 -- quantity integer,
+     -- orderId int,
+     -- productId int,
+	 -- orderPrice decimal (6,2),
+	  sendDate date,
+	  TicketNo integer not null,
 	  primary key (orderProductID),
 	  foreign key (productId) references products(productId),
       foreign key (orderId) references orders (orderId)
