@@ -1,39 +1,24 @@
 <?php
 /*
-   A PHP framework for web sites by Mike Lopez
-   
-   Sample CRUD controller for a product category
-   =============================================
-
-   The following URI patterns are handled by this controller: 
-   
-   /admin/category/new         	create a new category
-   /admin/category/edit/nn		edit category nn
-   /admin/category/delete/nn	delete category nn
-   /admin/category/view/nn      view category nn
-   
-   (nn is the category ID)
-   
-   Note that most of the logic is in the parent CRUD controller
-   Here, We're just implementing the category specific stuff
+ AL
 */
 
 include 'controllers/crudController.php';
-include 'models/category.php';
+//include 'models/orderModel.php';
 
-class CategoryController extends CrudController {
+class orderController extends CrudController {
 
 	public function __construct(IContext $context) {
 		parent::__construct($context);
 	}
 
 	protected function getPagename(){
-		return 'Categories';
-		//echo ' for adding categories';
+		return 'order';
+	
 	}
 	
 	// the following methods are the must-overrides in the Crud controller
-	protected function getTemplateForNew () {
+	/*protected function getTemplateForNew () {
 		return 'html/forms/adminCategoryNew.html';
 	}
 	protected function getTemplateForEdit () {
@@ -42,18 +27,30 @@ class CategoryController extends CrudController {
 	protected function getTemplateForDelete () {
 		return 'html/forms/adminCategoryDelete.html';
 	}
+	*/
+	protected function getTemplateForNew () {
+		//return 'html/forms/adminOrderNew.html';
+	}
 	protected function getTemplateForView () {
-		return 'html/forms/adminCategoryView.html';
+		//return 'html/forms/adminOrderNew.html';
 	}
+	protected function getTemplateForEdit () {
+		//return 'html/forms/adminOrderNew.html';
+	}
+	protected function getTemplateForDelete () {
+		//return 'html/forms/adminOrderNew.html';
+	}
+	
 	protected function createModel($id) {
-		return new CategoryModel($this->getDB(),$id);
+		/*return new OrderModel($this->getDB(),$orderId);*/
 	}
+	
 	protected function getModelData($model) {
-		$this->setField('name', $model->getName());
-		$this->setField('description',$model->getDescription());		
+		/*$this->setField('OrderName', $model->getName());
+		$this->setField('orderPRice',$model->getDescription());	*/	
 	}
 	protected function getFormData() {
-		$name=$this->getInput('name');
+		/*$name=$this->getInput('name');
 		$this->setField('name', $name);
 		$error=CategoryModel::errorInName($name);
 		if ($error!==null) {
@@ -64,21 +61,22 @@ class CategoryController extends CrudController {
 		$error=CategoryModel::errorInDescription($description);
 		if ($error!==null) {
 			$this->setError ('description',$error);
-		}
+		}*/
 	}
 	protected function updateModel($model) {
-		$name=$this->getField('name');
+		/*$name=$this->getField('name');
 		$description=$this->getField('description');
 		
 		$model->setName($name);
 		$model->setDescription($description);	
 		$model->save();
-		$this->redirectTo('admin/categories',"Category '$name' has been saved");
+		$this->redirectTo('admin/categories',"Category '$name' has been saved");*/
 	}
 	protected function deleteModel($model) {
+	/*
 		$name=$model->getName();
 		$model->delete();
-		$this->redirectTo('admin/categories',"Category '$name' has been deleted");
-	}	
+		$this->redirectTo('admin/categories',"Category '$name' has been deleted");*/
+	}
 }
 ?>
