@@ -63,7 +63,14 @@ create table customers (
        customerPostCode varchar (4),
        customerEmail varchar (50),
        isBusinessAccount boolean,
-       primary key (customerId)    
+       primary key (customerId)  
+
+		--suggest change alex
+		-- customerId integer not null auto_increment,
+		-- customerName varchar (20),
+		-- customerAddress varchar (100),
+		-- customerEmail varchar (50),
+		-- primary key (customerId)  
 );
 
 insert into customers (customerFirstName,customerLastName,
