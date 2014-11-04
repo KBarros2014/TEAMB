@@ -23,17 +23,16 @@ class ordersController extends AbstractController {
 			$html='<p>There are no orders</p>';
 		}
 		
-		/*else {
+		else {
 			$table = new TableView($rows);
 			$table->setColumn('orderId','Order name');
 			$table->setColumn('action','Action',
-				'&nbsp;<a href="##site##admin/category/view/<<catID>>">View</a>'.
-				'&nbsp;<a href="##site##admin/category/edit/<<catID>>">Edit</a>'.
-				'&nbsp;<a href="##site##admin/category/delete/<<catID>>">Delete</a>');
+				'&nbsp;<a href="##site##admin/order/view/<<orderId>>">View</a>'.
+				'&nbsp;<a href="##site##admin/order/submit/<<orderId>>">Submit</a>');
 			$html=$table->getHtml();
-			$html.='<p><a href="##site##admin/category/new">Add a new category</a></p>';
+			$html.='<p><a href="##site##admin/order/new">Make New Order</a></p>';
 		}	
-		*/
+		
 		$view= new View($this->getContext());	
 		$view->setModel(null);
 		$view->setTemplate('html/masterPage.html');

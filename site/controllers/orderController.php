@@ -4,7 +4,7 @@
 */
 
 include 'controllers/crudController.php';
-//include 'models/orderModel.php';
+include 'models/orderModel.php';
 
 class orderController extends CrudController {
 
@@ -18,35 +18,33 @@ class orderController extends CrudController {
 	}
 	
 	// the following methods are the must-overrides in the Crud controller
-	
 	protected function getTemplateForNew () {
-		//return 'html/forms/adminOrderNew.html';
 	}
 	protected function getTemplateForView () {
-		//return 'html/forms/adminOrderNew.html';
+		return 'html/forms/adminOrderView.html';
 	}
 	protected function getTemplateForEdit () {
-		//return 'html/forms/adminOrderNew.html';
 	}
 	protected function getTemplateForDelete () {
-		//return 'html/forms/adminOrderNew.html';
+		return 'html/forms/adminOrderSubmit.html';
 	}
 	
 	protected function createModel($id) {
-		/*return new OrderModel($this->getDB(),$orderId);*/
+		return new OrderModel($this->getDB(),$orderId);
 	}
 	
 	protected function getModelData($model) {
-		
+		$this->setField('OrderId', $model->getOrderId());
+		$this->setField('orderDate',$model->getOrderDate());	
 	}
 	protected function getFormData() {
-		
+		echo 'i here';
 	}
 	protected function updateModel($model) {
-		
+		echo 'i here';
 	}
 	protected function deleteModel($model) {
-	
+		echo 'i here';
 	}
 }
 ?>

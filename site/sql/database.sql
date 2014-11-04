@@ -64,41 +64,42 @@ create table customers (
        customerEmail varchar (50),
        isBusinessAccount boolean,
        primary key (customerId)  
-
-		--suggest change alex
+		-- suggect change 
 		-- customerId integer not null auto_increment,
 		-- customerName varchar (20),
 		-- customerAddress varchar (100),
 		-- customerEmail varchar (50),
 		-- primary key (customerId)  
+
 );
 
-insert into customers (customerFirstName,customerLastName,
-                       customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) 
+	insert into customers (customerFirstName,customerLastName,
+                      customerAddress,customerCity,customerPostCode,customerEmail,isBusinessAccount) 
 	values ('Jane','Doe','123 Main Street','Toytown','1234','JaneDoe@toys.com','yes');
 
 -- orders table
 -- I've deleted order quantity and price
 create table orders (
       orderId integer not null auto_increment,
-      orderQuantity integer,
-      orderPrice decimal (6,2),
+      -- orderPrice decimal (6,2),
 	  orderDate date,
+	  sendDate date, 
 	  customerId integer not null,
+	  TicketNo varchar (20),
       primary key (orderId),
       foreign key (customerId) references customers (customerId)
 );
-
+	insert into orders (orderDate,sendDate,customerId,TicketNo) 
+	values ('2014-12-12','2014-12-13','1','1');
 
 -- I've changed this to plural
 create table orderProducts (
 	  orderProductID integer not null auto_increment,
-	 -- quantity integer,
-     -- orderId int,
-     -- productId int,
+	  quantity integer,
+      orderId int,
+      productId int,
 	 -- orderPrice decimal (6,2),
-	  sendDate date,
-	  TicketNo integer not null,
+	 -- sendDate date,  
 	  primary key (orderProductID),
 	  foreign key (productId) references products(productId),
       foreign key (orderId) references orders (orderId)

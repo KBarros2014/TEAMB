@@ -65,7 +65,6 @@ class CustomerModel extends  AbstractModel{
 	
 	
 	public function getCustomerAddress() {
-	echo "hllo";//another tesr kb
 		return $this->customerAddress;
 	}
 	
