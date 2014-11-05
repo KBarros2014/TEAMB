@@ -1,14 +1,18 @@
 <?php
 //Alex
-include 'models/myShoppingCart';
+include 'models/myShoppingCart.php';
+
 class orderModel extends  AbstractModel{
 
 	private $orderId;
 	private $orderDate;
 	private $ticketNo;
 	private $orderAddress;
+	private $sendDate;
 	private $changed;
-
+	
+	private $intDate;
+	
 	public function __construct($db, $orderId=null) {
 		parent::__construct($db);
 		$this->init();
@@ -22,6 +26,7 @@ class orderModel extends  AbstractModel{
 		$this->orderDate=null;
 		$this->ticketNo=null;
 		$this->orderAddress=null;
+		$this->sendDate=null;
 		$this->changed=false;		
 	}
 	
@@ -31,8 +36,9 @@ class orderModel extends  AbstractModel{
  * @param intDate integer optional
  * @return string
  ******************************************/
+ 
 	function getDateTimeValue( $intDate = null ) {
-    $strFormat = 'Y-m-d\TH:i:s.uP';
+    $strFormat = 'Y-m-d H:i:s';
     $strDate = $intDate ? date( $strFormat, $intDate ) : date( $strFormat ) ; 
     return $strDate;
 }
@@ -75,9 +81,30 @@ class orderModel extends  AbstractModel{
 		$this->sendDate=$row['sendDate'];
 		$this->customerId=$row['customerId'];
 		$this->TicketNo=$row['TicketNo'];
-		//$this->customerId=$customerId;
 		$this->changed=false;
 	}
 	
+	static function createFromCart (ShoppingCart $cart, $customerID)
+	) {
+		$db=$this->getDB();
+		if($orderId==null)
+		{
+			$this->orderId=$orderId+1;
+			$this->orderDate=$strDate;
+			$this->sendDate=null;
+			$this->ticketNo=null;
+			$this->customerID=$customerID;
+			$this->customerAddress=
+			$sql="insert into order (orderDate,sendDate,customerId,TicketNo) values ('$orderDate','$sendDate','$customerId','$TicketNo')";
+			$this->orderId=$db->getInsertID();				
+		}
+		
+		$count = $cart->getCount();
+		for ($i=0 ; $i < $count ; $i++) {
+			$item = $cart->getItemAt($i);
+			$productID = $item->getItemCode();
+			$quantity = $item->getQuantity();
+			}
 	}
+}
 ?>

@@ -10,6 +10,8 @@ class orderController extends CrudController {
 
 	public function __construct(IContext $context) {
 		parent::__construct($context);
+		echo "Order controller created<br/>";
+		
 	}
 
 	protected function getPagename(){
@@ -30,7 +32,7 @@ class orderController extends CrudController {
 	}
 	
 	protected function createModel($id) {
-		return new OrderModel($this->getDB(),$orderId);
+		return new OrderModel($this->getDB(),$id);
 	}
 	
 	protected function getModelData($model) {

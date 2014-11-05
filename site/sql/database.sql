@@ -85,6 +85,7 @@ create table orders (
 	  orderDate date,
 	  sendDate date, 
 	  customerId integer not null,
+	  orderAddress varchar (100),
 	  TicketNo varchar (20),
       primary key (orderId),
       foreign key (customerId) references customers (customerId)

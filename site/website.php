@@ -91,7 +91,12 @@
 		    case 'customer':
 				return 'Customer';
 			case 'order':
+				return 'Order';
+			case 'orders':
 				return 'Orders';
+			case 'checkout':
+				return 'Checkout';
+			
 			default:
 				throw new InvalidRequestException ('No such page');
 		}

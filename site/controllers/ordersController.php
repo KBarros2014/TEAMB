@@ -18,6 +18,7 @@ class ordersController extends AbstractController {
 	protected function getView($isPostback) {
 		$db=$this->getDB();
 		$sql="select orderId from orders";
+		// $sql="select orderId from orders where dateSent=null";
 		$rows=$db->query($sql);
 		if (count($rows)==0) {
 			$html='<p>There are no orders</p>';
@@ -30,13 +31,13 @@ class ordersController extends AbstractController {
 				'&nbsp;<a href="##site##admin/order/view/<<orderId>>">View</a>'.
 				'&nbsp;<a href="##site##admin/order/submit/<<orderId>>">Submit</a>');
 			$html=$table->getHtml();
-			$html.='<p><a href="##site##admin/order/new">Make New Order</a></p>';
+			//$html.='<p><a href="##site##admin/order/new">Make New Order</a></p>';
 		}	
 		
 		$view= new View($this->getContext());	
 		$view->setModel(null);
 		$view->setTemplate('html/masterPage.html');
-		$view->setTemplateField('pagename','orders');
+		$view->setTemplateField('pagename','unsent orders');
 		$view->addContent($html);
 		return $view;
 	}
