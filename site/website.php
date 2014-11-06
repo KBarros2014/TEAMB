@@ -90,6 +90,10 @@
 				return 'Customers';
 		    case 'customer':
 				return 'Customer';
+			case 'orders':
+				return 'Orders';
+			case 'order':
+				return 'Order';
 			default:
 				throw new InvalidRequestException ('No such page');
 		}

@@ -78,6 +78,7 @@ class View {
 			$menu->setMenuItem('b', '##site##admin/categories', 'Categories') ;
 			$menu->setMenuItem('c', '##site##admin/products', 'Products') ;
 			$menu->setMenuItem('d', '##site##admin/customers', 'Customers') ;
+			$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
 			$menu->setMenuItem('b', '##site##login', 'Log in') ;			
