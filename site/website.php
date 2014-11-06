@@ -90,10 +90,20 @@
 				return 'Customers';
 		    case 'customer':
 				return 'Customer';
+
 			case 'orders':
 				return 'Orders';
 			case 'order':
 				return 'Order';
+
+			case 'order':
+				return 'Order';
+			case 'orders':
+				return 'Orders';
+			case 'checkout':
+				return 'Checkout';
+			
+
 			default:
 				throw new InvalidRequestException ('No such page');
 		}

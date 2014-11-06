@@ -78,7 +78,12 @@ class View {
 			$menu->setMenuItem('b', '##site##admin/categories', 'Categories') ;
 			$menu->setMenuItem('c', '##site##admin/products', 'Products') ;
 			$menu->setMenuItem('d', '##site##admin/customers', 'Customers') ;
+
 			$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
+
+			$menu->setMenuItem('e', '##site##admin/orders', 'Unsent orders') ;
+			$menu->setMenuItem('f', '##site##admin/checkOut', 'Check out') ;
+
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
 			$menu->setMenuItem('b', '##site##login', 'Log in') ;			

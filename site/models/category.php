@@ -24,12 +24,16 @@ class CategoryModel extends AbstractModel {
 	private $changed;
 	
 	public function __construct($db, $id=null) {
+
 		parent::__construct($db);
 		$this->init();
 		if ($id !== null) {
 			$this->load($id);
+			
 		}
 	}
+	
+	
 	private function init() {
 		$this->id=null;
 		$this->name=null;
