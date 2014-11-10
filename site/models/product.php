@@ -43,7 +43,7 @@ class ProductModel extends AbstractModel {
 	public function getProductName() {
 		return $this->productName;
 	}
-	public function setCategoryId($value){
+	public function setProductId($value){
 	$error=$this->errorInProductCat($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);

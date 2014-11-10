@@ -1,6 +1,7 @@
 <?php
 //Alex
 include 'models/myShoppingCart.php';
+include 'models/productOrderModel.php';
 
 class orderModel extends  AbstractModel{
 
@@ -10,8 +11,9 @@ class orderModel extends  AbstractModel{
 	private $orderAddress;
 	private $sendDate;
 	private $changed;
-	
+	private $customerId;
 	private $intDate;
+	pricate $count=0;
 	
 	public function __construct($db, $orderId=null) {
 		parent::__construct($db);
@@ -27,7 +29,8 @@ class orderModel extends  AbstractModel{
 		$this->ticketNo=null;
 		$this->orderAddress=null;
 		$this->sendDate=null;
-		$this->changed=false;		
+		$this->changed=false;
+		$this->customerId=null;
 	}
 	
 	/***************************************
@@ -89,21 +92,23 @@ class orderModel extends  AbstractModel{
 		$db=$this->getDB();
 		if($orderId==null)
 		{
-			$this->orderId=$orderId+1;
-			$this->orderDate=$strDate;
-			$this->sendDate=null;
-			$this->ticketNo=null;
-			$this->customerID=$customerID;
-			$this->customerAddress=
-			$sql="insert into order (orderDate,sendDate,customerId,TicketNo) values ('$orderDate','$sendDate','$customerId','$TicketNo')";
-			$this->orderId=$db->getInsertID();				
+		//order table
+			$orderDate=$strDate;
+			$sendDate=null;
+			$ticketNo=null;
+			$customerId=$cart->customerID;
+			$orderAddress=$cart->getCustomerAddress;
+			$sql="insert into order (orderDate,sendDate,customerId,TicketNo,orderAddress) values ('$orderDate','$orderAddress','$customerId','$TicketNo','$orderAddress)";				
+			$this->orderId=$db->getorderID();	
 		}
-		
+		//order product
 		$count = $cart->getCount();
 		for ($i=0 ; $i < $count ; $i++) {
 			$item = $cart->getItemAt($i);
 			$productID = $item->getItemCode();
 			$quantity = $item->getQuantity();
+			$productId = null;
+			$sql="insert into productOrder (orderProductID,quantity,orderId,productId) values ('$productID','$quantity','$productID','$productId')";
 			}
 	}
 }
