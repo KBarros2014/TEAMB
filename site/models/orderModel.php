@@ -99,7 +99,8 @@ class orderModel extends  AbstractModel{
 			$customerId=$cart->customerID;
 			$orderAddress=$cart->getCustomerAddress;
 			$sql="insert into order (orderDate,sendDate,customerId,TicketNo,orderAddress) values ('$orderDate','$orderAddress','$customerId','$TicketNo','$orderAddress)";				
-			$this->orderId=$db->getorderID();	
+			$this->orderId=$db->getorderID();
+			$this->getDB()->execute($sql);
 		}
 		//order product
 		$count = $cart->getCount();
@@ -108,8 +109,10 @@ class orderModel extends  AbstractModel{
 			$productID = $item->getItemCode();
 			$quantity = $item->getQuantity();
 			$productId = null;
-			$sql="insert into productOrder (orderProductID,quantity,orderId,productId) values ('$productID','$quantity','$productID','$productId')";
-			}
+			$sql="insert into productOrder (orderProductID,quantity,orderId) values ('$productID','$quantity','$this->orderId')";
+			$this->getDB()->execute($sql);
+			
+		}
 	}
 }
 ?>
