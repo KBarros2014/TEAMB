@@ -1,7 +1,7 @@
 <?php
 //Alex
 include 'models/myShoppingCart.php';
-include 'models/productOrderModel.php';
+include 'lib/abstractModel.php';
 
 class orderModel extends  AbstractModel{
 
@@ -11,9 +11,7 @@ class orderModel extends  AbstractModel{
 	private $orderAddress;
 	private $sendDate;
 	private $changed;
-	private $customerId;
 	private $intDate;
-	pricate $count=0;
 	
 	public function __construct($db, $orderId=null) {
 		parent::__construct($db);
@@ -29,8 +27,7 @@ class orderModel extends  AbstractModel{
 		$this->ticketNo=null;
 		$this->orderAddress=null;
 		$this->sendDate=null;
-		$this->changed=false;
-		$this->customerId=null;
+		$this->changed=false;		
 	}
 	
 	/***************************************
@@ -87,31 +84,33 @@ class orderModel extends  AbstractModel{
 		$this->changed=false;
 	}
 	
-	static function createFromCart (ShoppingCart $cart, $customerID)
-	) {
-		$db=$this->getDB();
-		if($orderId==null)
-		{
-		//order table
-			$orderDate=$strDate;
+	static function createFromCart ($db,ShoppingCart $cart) {
+		try {
+			$db->beginTransaction();
+			$orderDate=date("Y-m-d h:i:s",time());
 			$sendDate=null;
 			$ticketNo=null;
-			$customerId=$cart->customerID;
-			$orderAddress=$cart->getCustomerAddress;
-			$sql="insert into order (orderDate,sendDate,customerId,TicketNo,orderAddress) values ('$orderDate','$orderAddress','$customerId','$TicketNo','$orderAddress)";				
-			$this->orderId=$db->getorderID();
-			$this->getDB()->execute($sql);
-		}
-		//order product
-		$count = $cart->getCount();
-		for ($i=0 ; $i < $count ; $i++) {
-			$item = $cart->getItemAt($i);
-			$productID = $item->getItemCode();
-			$quantity = $item->getQuantity();
-			$productId = null;
-			$sql="insert into productOrder (orderProductID,quantity,orderId) values ('$productID','$quantity','$this->orderId')";
-			$this->getDB()->execute($sql);
+			$customerID=$cart->getCustomerId();
 			
+			$sql="insert into orders (orderDate,sendDate,customerId,TicketNo) ".
+				 "values ('$orderDate','$sendDate','$customerID','$ticketNo')";
+			$db->execute ($sql);
+			$orderID=$db->getInsertID();				
+		
+		//	var_dump ($cart);
+			
+			$count = $cart->getCount();
+			for ($i=0 ; $i < $count ; $i++) {
+				$item = $cart->getItemAt($i);
+				$productID = $item->getItemCode();
+				$quantity = $item->getQuantity();
+				$sql="insert into OrderProducts(quantity, orderID, productID) ".
+				"values ($quantity, $orderID, $productID)";
+				$db->execute ($sql);
+			}
+			$db->commitTransaction();
+		} catch (Exception $ex) {
+			$db->rollbackTransaction();;
 		}
 	}
 }
