@@ -1,5 +1,6 @@
 <?php
 include 'lib/menuBar.php';
+
 class View {
 	private $context;
 	private $model;
@@ -7,7 +8,6 @@ class View {
 	private $template;
 	private $fields;
 	private $content;
-	
 	private $subviewTemplate;
 	private $subviewFields;
 
@@ -82,11 +82,12 @@ class View {
 			$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
 
 			$menu->setMenuItem('e', '##site##admin/orders', 'Unsent orders') ;
-			$menu->setMenuItem('f', '##site##admin/checkOut', 'Check out') ;
+			$menu->setMenuItem('f', '##site##checkout', 'Check out') ;
 
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
-			$menu->setMenuItem('b', '##site##login', 'Log in') ;			
+			$menu->setMenuItem('b', '##site##login', 'Log in') ;	
+			$menu->setMenuItem('c', '##site##checkout', 'Check out') ;			
 		}
 	
 		if ($this->subviewTemplate!==null) {
@@ -101,3 +102,6 @@ class View {
 	}
 }
 ?>
+
+
+
