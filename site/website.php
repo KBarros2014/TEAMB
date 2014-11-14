@@ -64,6 +64,8 @@
 				return 'Login';
 			case 'logout':
 				return 'Logout';
+			case "checkout":
+				return "Checkout";
 			default:
 				throw new InvalidRequestException ("No such page");
 		}
@@ -110,3 +112,5 @@
 	}
 	
 ?>
+
+
