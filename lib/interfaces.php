@@ -3,8 +3,7 @@
    A PHP framework for web sites by Mike Lopez
    
    custom exceptions and common interfaces
-   =======================================
- copied by TeamB   
+   =======================================   
 */
 
 class DatabaseException extends Exception {}

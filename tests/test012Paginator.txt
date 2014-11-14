@@ -1,0 +1,7 @@
+{ 
+	"name": "Test of Paginator class",
+	"author": "Mike Lopez",
+	"unitTest": "PaginatorTest"
+}
+
+
