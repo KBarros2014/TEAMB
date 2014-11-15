@@ -18,8 +18,33 @@
    Here, We're just implementing the product specific stuff
 */
 
+
+	// the following methods are the must-overrides in the Crud controller
+
+	
+	<?php
+/*
+   A PHP framework for web sites by Mike Lopez
+   
+   Sample CRUD controller for a product
+   =============================================
+
+   The following URI patterns are handled by this controller: 
+   
+   /admin/product/new         	create a new product
+   /admin/Product/edit/nn		edit product nn
+   /admin/product/delete/nn	delete product nn
+   /admin/product/view/nn      view product nn
+   
+   (nn is the product ID)
+   
+   Note that most of the logic is in the parent CRUD controller
+   Here, We're just implementing the product specific stuff
+*/
+
 include 'controllers/crudController.php';
 include 'models/product.php'; 
+include 'lib/listSelectionView.php';
 
 class ProductController extends CrudController {
 
@@ -47,13 +72,26 @@ class ProductController extends CrudController {
 	protected function createModel($id) {
 		return new ProductModel($this->getDB(),$id);
 	}
+	private function getCategoryList($selectedID) {
+		$db=$this->getDB();
+		$sql='select catID, catName from categories order by catName';
+		$rowset=$db->query($sql);
+		$list = new ListSelectionView($rowset);
+		$list->setFormName ('catID');
+		$list->setIdColumn ('catID');
+		$list->setValueColumn ('catName');
+		$list->setSelectedId ($selectedID);	
+		return $list->getHtml();
+	}
 	protected function getModelData($model) {
 		$this->setField('name', $model->getProductName());
 		$this->setField('description',$model->getProductDescription());	//	for the tests
 		$this->setField('price',$model->getProductPrice());		
 		$this->setField('picture',$model->getProductPic());	
-		$this->setField('catID', $model->getCategoryId());
+		$this->setField('catID', $model->getCategory()->getName().'('.$model->getCategoryId().')');
+		$this->setField('categoryList', $this->getCategoryList($model->getCategoryId()));
 	}
+	
 	protected function getFormData() {
 		$price=$this->getInput('price');
 		$this->setField('price', $price);
@@ -91,11 +129,25 @@ class ProductController extends CrudController {
 		} 
 		return null;
 	}
+	 private function getCategories($selectedID) {
+		$db = $this->getDB();
+		$sql ='select catID, name from categories order by name';
+		$rowset= $db->query($sql);
+		echo $rowset;
+		$list = new ListSelectionView($rowset);
+		$list = setFormName('categoryID');
+		$list = setIdColumn('categogyID');
+		return $list->getHtml();
+	 
+	 
+	 
+	 
+	 }
 	protected function updateModel($model) {
 		$productName=$this->getField('name');//get infro from input boxes 
 		$description=$this->getField('description');
 		$productPrice=$this->getField('price');
-		$catID=$this->getField('catID');// for test get html data which is alist of categories ex technology furniture ect  
+		$catID=$this->getField('catID');// for test get html data which is a list of categories ex technology furniture ect  
 		//$catID =(int)$catID; //categroy id is an integer kab transforms that options into integers
 		//var_dump($catID);//what type we got
 		$model->setProductName($productName);
