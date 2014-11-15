@@ -9,8 +9,12 @@ abstract class AbstractController {
 	public function __construct (IContext $context){
 		$this->context=$context;
 		$this->redirect=null;
-		$this->inputs=$_POST;
-		unset ($_POST);
+		if (isset($_POST) ){
+			$this->inputs=$_POST;
+			unset ($_POST);
+		} else {
+			$this->inputs=array();
+		}
 	}
 	protected function getContext() {
 		return $this->context;
@@ -60,9 +64,11 @@ abstract class AbstractController {
 		return null;
 	}	
 	
-	protected function redirectTo ($page, $feedback) {
+	protected function redirectTo ($page, $feedback=null) {
 		$this->redirect=$this->context->getURI()->getSite().$page;
-		$this->context->getSession()->set('feedback',$feedback);
+		if ($feedback!==null) {
+			$this->context->getSession()->set('feedback',$feedback);
+		}
 	}
 	
 	protected function getInput($inputField) {

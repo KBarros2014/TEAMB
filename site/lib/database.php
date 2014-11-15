@@ -36,7 +36,7 @@ class Database implements IDatabase
     public function execute ($sql){
 		$result=$this->conn->query ($sql);
 		if (!$result) {
-			throw new DatabaseException($this->sqlError('execute'));
+			throw new DatabaseException($this->sqlError("execute sql '$sql', "));
 		}
 		return $this->conn->affected_rows;
 	}
@@ -48,7 +48,7 @@ class Database implements IDatabase
 		}
 		return $count;
 	}
-	 
+	
 	public function getInsertID() {
 		return $this->conn->insert_id;
 	}

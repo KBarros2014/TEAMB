@@ -17,20 +17,21 @@ class CategoriesController extends AbstractController {
 	}
 	protected function getView($isPostback) {
 		$db=$this->getDB();
-		$sql="select catID, catName from categories order by catName asc";
+		$sql="select categoryID, name from categories order by name asc";
 		$rows=$db->query($sql);
 		if (count($rows)==0) {
 			$html='<p>There are no categories</p>';
 		} else {
 			$table = new TableView($rows);
-			$table->setColumn('catName','Category name');
+			$table->setColumn('name','Category name');
 			$table->setColumn('action','Action',
-				'&nbsp;<a href="##site##admin/category/view/<<catID>>">View</a>'.
-				'&nbsp;<a href="##site##admin/category/edit/<<catID>>">Edit</a>'.
-				'&nbsp;<a href="##site##admin/category/delete/<<catID>>">Delete</a>');
+				'&nbsp;<a href="##site##admin/category/view/<<categoryID>>">View</a>'.
+				'&nbsp;<a href="##site##admin/category/edit/<<categoryID>>">Edit</a>'.
+				'&nbsp;<a href="##site##admin/category/delete/<<categoryID>>">Delete</a>');
 			$html=$table->getHtml();
-			$html.='<p><a href="##site##admin/category/new">Add a new category</a></p>';
 		}	
+		$html.='<p><a href="##site##admin/category/new">Add a new category</a></p>';
+		
 		$view= new View($this->getContext());	
 		$view->setModel(null);
 		$view->setTemplate('html/masterPage.html');

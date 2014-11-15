@@ -6,7 +6,7 @@
 		2) Define columns with setColumn
 			a) (Simplest) just define a field name; This will also be used for the heading
 					$table->setColumn('name');
-			b)  Simple) Define a field name and a column heading.
+			b)  (Simple) Define a field name and a column heading.
 					$table->setColumn('name','Customer Name');
 			c)  (Complex) Define a field name, a column heading and a template.
 					$table->setColumn('name','Customer Name','template');
@@ -35,7 +35,7 @@ class TableView{
 		$this->title=null;
 		$this->headings=array();
 		$this->templates=array();
-			}	   
+	}	   
 	public function setColumn($fieldName, $heading=null, $template=null) {
 		if ($heading == null) {
 			$heading=$fieldName;

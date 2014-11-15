@@ -13,7 +13,8 @@
 	try {
 		// common stuff can go here
 		date_default_timezone_set('Pacific/Auckland');
-
+		set_error_handler("exception_error_handler");
+		
 		$context=Context::createFromConfigurationFile("website.conf");
 		$context->setUser(new User($context));
 
@@ -44,7 +45,7 @@
 		
 	function logException ($ex) {
 		// do nothing for now
-		echo "Should log: ".$ex->getMessage();
+		print "Exceptiom thrown: {$ex->getMessage()}>br/>";
 	}
 	
 	// This is a very simple router
@@ -55,6 +56,13 @@
 		switch ($path) {
 			case 'admin':
 				return getAdminController($context);
+			case 'products':
+				return 'ProductsViewer';
+			case 'product':
+				return 'ProductViewer';
+			case 'cart':
+				return 'Cart';
+				
 			case '':
 				$uri->prependPart('home');
 				return 'Static';
@@ -64,18 +72,16 @@
 				return 'Login';
 			case 'logout':
 				return 'Logout';
-			case "checkout":
-				return "Checkout";
 			default:
 				throw new InvalidRequestException ("No such page");
 		}
 	}
 
-	// This is a very simple router
-	// We just match the URI to a stub of the controller name
+	// This is a very simple admin router
+	// We match the next part of the URI to the controller name for the action
 	function getAdminController($context) {
 		if (!$context->getUser()->isAdmin() ) {
-			throw new InvalidRequestException('Administrator access required for this page');
+			throw new InvalidRequestException('Administrator access is required for this page');
 		}
 		$uri=$context->getURI();
 		$path=$uri->getPart();
@@ -88,29 +94,23 @@
 				return 'Products';
 		    case 'product':
 				return 'Product';
-			case 'customers':
-				return 'Customers';
-		    case 'customer':
-				return 'Customer';
-
-			case 'orders':
-				return 'Orders';
-			case 'order':
-				return 'Order';
-
-			case 'order':
-				return 'Order';
-			case 'orders':
-				return 'Orders';
-			case 'checkout':
-				return 'Checkout';
-			
-
+			case 'people':
+				return 'People';
 			default:
 				throw new InvalidRequestException ('No such page');
 		}
 	}
 	
+
+/*	
+TODO: add this? 
+ error_reporting(E_ALL | E_STRICT);
+*/
+
+/**
+ * Convert errors, notices, warnings etc. into exceptions.
+ */
+	function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
 ?>
-
-

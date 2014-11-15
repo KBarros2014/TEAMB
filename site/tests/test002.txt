@@ -1,0 +1,7 @@
+{ 
+	"name": "Test Session class",
+	"author": "Mike Lopez",
+	"unitTest": "SessionTest"
+}
+
+

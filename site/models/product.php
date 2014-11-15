@@ -1,245 +1,200 @@
 <?php
-//kB
+/*
+   A PHP framework for web sites by Mike Lopez
+   
+   A sample entity model for a product
+   ===================================
+
+   Design features:
+   ** Static methods (ErrorIn...) can be used to check fields before creation
+   ** anything invalid after creation throws an exception
+   ** Creating with an ID loads from the database
+   ** after setting data, a save will update the database
+   ** delete will remove the category from the database and clear all data
+
+*/
+include_once 'lib/abstractEntityModel.php';
 include_once 'models/category.php';
-class ProductModel extends AbstractModel {
 
-	private $productId;
-	private $productName=null;
-	private $productDescription= null;
-	private $productPrice=null;
-	private $productPic=null;
-	private $changed;
-	private $category;
-	private $catID = null;
-	/*
-	
-	To create a new product ...
-		$p = new Product ($db);
-		... call setters
-		... $p->save();
-		
-	To update a product ...
-		$p = new Product ($id);
-		... call setters
-		... $p->save();
-		
+class ProductModel extends AbstractEntityModel {
+
+	/* 		Section one - Private instance data
+			===================================	
 	*/
+
+	private $name;
+	private $description;
+	private $price;
+	private $categoryID;
 	
+	// lazy properties
+	private $category;
+	private $image;
+	private $thumbnail;
 	
-	public function __construct($db, $productId=null)  { //another field to be inserted here I will work on it after holiday
-		parent::__construct($db);
-		$this->productId=$productId;
-		//$this->setProductName= ($productName);
-		//$this->setProductPrice($productPrice);
-		$this->changed = false;
-		if ($productId !== null) {
-			$this->load ($productId);
-		}
-		
-	}
-	
-	public function getProductId() {
-		return $this->productId;
+	// standard constructor
+	public function __construct($db, $id=null) {
+		parent::__construct($db,$id);
 	}
 
-	public function getProductName() {
-		return $this->productName;
+	/* 		Section two - Getters and setters for private instance data
+			===========================================================
+			
+			Setters validate data before setting and 
+			notify changes via didChange()
+	*/
+	public function getName() {
+		return $this->name;
 	}
-	public function setCategoryId($value){
-	$error=$this->errorInProductCat($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
-		}
-	    $this->catID =$value;
-		$this->changed=true;
+	public function getDescription() {
+		return $this->description;
 	}
-	public function getCategoryId(){
-		return $this->catID;
-	
+	public function getPrice() {
+		return $this->price;
+	}
+	public function getCategoryID() {
+		return $this->categoryID;
 	}
 	public function getCategory() {
-		if ($this->category == null) {
-			$this->category = new CategoryModel ($this->getDB(), $this->catID);
-	}
-	return $this->category;
-	}
-	public function setProductName($value) {
-		$error=$this->errorInProductName($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
+		if ($this->category==null) {
+			$this->category = new CategoryModel ($this->getDB(), $this->categoryID);
 		}
-		$this->productName=$value;
-		$this->changed=true;
+		return $this->category;
 	}
-	
-	public function getProductPrice() {
-		return $this->productPrice;
-	}
-	
-	public function setProductPrice($value) {
-		$error=$this->errorInProductPrice($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
+	public function getImage() {
+		if ($this->image==null) {
+			$filename = 'p'.$this->getID();
+			if (file_exists('images/products/'.$filename.'.jpg')) {
+				$this->image=$filename.'.jpg';
+			} else {
+				$this->image=$filename.'.png';
+			}
 		}
-		$this->productPrice=$value;
-		$this->changed=true;
-	}
-	
-	public function getProductPic() {
-		return $this->productPic;
-	}
-	
-	public function setProductPic($value) {
-		$error=$this->errorInProductPic($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
+		return $this->image;
+	}	
+	public function getThumbnail() {
+		if ($this->thumbnail==null) {
+			$filename = 't'.$this->getID();
+			if (file_exists('images/products/'.$filename.'.jpg')) {
+				$this->thumbnail=$filename.'.jpg';
+			} else {
+				$this->thumbnail=$filename.'.png';
+			}
 		}
-		$this->prodPic=$value;
-		$this->changed=true;
-	}
-	
-	public function hasChanges() {
-		return $this->changed;
-	}
-	  
-	private function load($productId) {
-	if (!is_int($productId) && !ctype_digit($productId)) {
-			throw new InvalidDataException("Invalid product ID ($productId)");
-		}
-		$sql="select productName, productDescription, productPrice, productPic from products ".
-			 "where productID = $productId";
-		$rows=$this->getDB()->query($sql);
-		//echo $rows;
-		
-		if (count($rows)!==1) {
-			throw new InvalidDataException("Product ID $productId not found");
-		}
-		
-		$row=$rows[0];
-		$this->productName=$row['productName'];
-		$this->productDescription=$row['productDescription'];
-		$this->producPrice= $row['productPrice'];  
-		$this->productPic=$row['productPic'];//we do not have picutre 
-		$this->productId=$productId;
-		$this->changed=false;
-	}
-	
-	public function save() {//save function to be perfected here // to be added more conditions on the contruct
-		if ($this->changed) {
-		              if ($this->productName==null || $this->productPrice==null || $this->productDescription==null ||$this->catID==null) {
-				throw new InvalidDataException("Incomplete data Hi it s me testing again make sure you select cat");
-		}
-		echo $this->productName." ".$this->productPrice;// just for checking where it breaks kb
-	    $db=$this->getDB();
-		
-		$productId=$this->productId;
-		$productName=$this->productName;
-		$productDescription=$this->productDescription;
-		$productPic =$this->productPic;
-		$productPrice= $this->productPrice;//lets see if breaks the code
-		$catID = $this->catID;
-			if ($productId === null) {
-				$sql="insert into products(productName, productDescription, productPrice, productPic,catID) values (".
-						"'$productName', '$productDescription', '$productPrice','$productPic','$catID')" ;
-			echo $sql;
-		$affected=$db->execute($sql);
-		 echo $affected;
-			if ($affected !== 1) {
-					throw new InvalidDataException("Insert product failed");	
-				}
-			$this->productId=$db->getInsertID();
-		} else {
-			$sql="update products ".
-					"set productName='$productName', ".
-			            "productDescription='$productDescription' ".
-						 "productPrice ='$productPrice' ".
-						 	 "productPic ='$productPic' ".
-					"where productID= $productId";
-					if ($db->execute($sql) !== 1) {
-					throw new InvalidDataException("Update product failed");	
-				}
+		return $this->thumbnail;
+	}	
+	public function setName($value) {
+		$this->assertNoError($this->errorInName($value));
+		$this->name=$value;
+		$this->didChange();
+	}		
+	public function setDescription($value) {
+		$this->assertNoError($this->errorInDescription($value));
+		$this->description=$value;
+		$this->didChange();
+	}	
+	public function setPrice($value) {
+		$this->assertNoError($this->errorInPrice($value));
+		$this->price=(float)$value;
+		$this->didChange();
+	}	
+	public function setCategoryID($value) {
+		$this->assertNoError($this->errorInCategoryID($this->getDB(), $value));
+		$this->categoryID=(int)$value;
+		$this->didChange();
+		$this->category=null;
+	}	
+	/* 		Section three - Implementation of all must overrides
+			====================================================
 			
-		}
-		$this->hasChanges=false;
-		//$this->changed =false;
-		
-	}
-	}
-		
-		
-	
-	public function delete () {
-	    $sql='delete from products where productID = '.$this->productId;;
-		$rows=$this->getDB()->execute($sql);
-		$this->id=$null;
-		$this->changed=false;
+			These modify the generic logic in the abstract model to 
+			define the specific logic that applies to categories
+	*/
+
+	// 	set default values for instance data 
+	// (required fields should be set to null)		
+	protected function init() {
+		$this->name=null;
+		$this->description=null;
+		$this->price=null;
+		$this->categoryID=null;
+		$category=null;
+		$image=null;
+		$thumbnail=null;
 	}
 
-	public static function errorInProductName($value) {
-		if ($value==null || strlen($value)==0) {
-			return 'Product name must be specified';
-		}
-		if (strlen($value)>30) {
-			return 'errorInProductName name must have no more than 30 characters';
-		}
-		return null;
+	// load instance data from database
+	protected function loadData($row) {
+		$this->name=$row['name'];
+		$this->description=$row['description'];
+		$this->price=$row['price'];
+		$this->categoryID=$row['categoryID'];	
+	}
+
+	// return false if any required field is null
+	protected function allRequiredFieldsArePresent() {
+		return $this->name !== null && 
+		       $this->description !==null &&
+			   $this->price!==null &&
+			   $this->categoryID!==null;
 	}
 	
-	public static function errorInProductPrice($value) {
-		if ($value== null) {
-			return 'Price must be specified';
-		}
-		if ($value <0) {
-		return "No negative number no words please";
-		}
-		return null;
-		}
-	
-	public static function errorInProductPic($value) {
-		if ($value==null ) {// in the future we might need to check the extension of images 
-			return 'Picture  must be supplied';
-		}
-		return null;
-		}
-	
-	public function setDescription($value) { //needed  function
-		$error=$this->errorInProductDescription($value);
-		if ($error!==null ){
-			throw new InvalidDataException($error);
-		}
-		$this->productDescription=$value;
-		$this->changed=true;
+	// load instance data from database
+	protected function getLoadSql($id) {
+		return 	"select name, description, price, categoryID from products ".
+				"where productID = $id";
 	}
-	
-	public function getProductDescription() {
-		return $this->productDescription;
-	}
-	
-	public static function errorInProductCat($value) { 
-		if ($value==null) {
-			return 'Category  must be supplied';
-		}
-		return null;
-		}
-	/*	public static function isExistingId($db,$id) {
-		if ($id==null){
-			return false;
-		}
-		if (!is_int($id) && !(ctype_digit($id))) {
-			return false;
-		}
-		*/
-	public static function errorInProductDescription($value) {//irrelevant  kb
-		if ($value==null || strlen($value)==0) {
-			return 'desc name must be specified';
-		}
-	
-      if ($value <0){
-	  return "not negative number";
-	  }
+	// sql to insert instance data into database
+	protected function getInsertionSql() {	
+		$name=$this->safeSqlString($this->name);
+		$description=$this->safeSqlString($this->description);
+		$price=$this->safeSqlNumber($this->price);
+		$categoryID=$this->safeSqlNumber($this->categoryID);
 		
+		return "insert into products(name, description, price, categoryID) ".
+		       "values ($name, $description, $price, $categoryID)";	
+	}	
+	// sql to update database record from instance data
+	protected function getUpdateSql() {
+		$name=$this->safeSqlString($this->name);
+		$description=$this->safeSqlString($this->description);	
+		$price=$this->safeSqlNumber($this->price);
+		$categoryID=$this->safeSqlNumber($this->categoryID);
 		
-		return null;
+		return "update products set ".
+			   "name=$name, ".
+			   "description=$description, ".
+			   "price=$price, ".
+			   "categoryID=$categoryID ".
+			   "where productID=".$this->getId();
 	}
+	// sql to delete this instance
+	protected function getDeletionSql() {
+	     return 'delete from products where productID = '.$this->getId();
+	}
+		
+	/* 		Section four - Validation functions for all fields
+			==================================================
+		
+			These are all static (shared class level) functions
+	*/
+	public static function errorInName($value) {
+		return self::errorInRequiredField('Product name',$value,40);	
+	}
+	public static function errorInDescription($value) {
+		return self::errorInRequiredField('Description',$value,300);
+	}	
+	public static function errorInPrice($value) {
+		return self::errorInRequiredNumericField('Price',$value,2,0.01);
+	}		
+	public static function errorInCategoryID($db,$value) {
+		if (CategoryModel::isExistingID($db,$value)) {
+			return null;
+		}
+		return "Invalid category ID ($value)";
+	}	
+	public static function isExistingId($db,$id) {
+		return self::checkExistingId($db,$id, 
+			'select 1 from products where productID='.$id);
+	}	
 }
-?>

@@ -1,6 +1,6 @@
 { 
 	"name": "Test of Product class",
-	"author": "Steven Reynolds",
+	"author": "Mike Lopez",
 	"unitTest": "ProductTest"
 }
 

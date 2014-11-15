@@ -1,0 +1,18 @@
+<div class="adminEdit">
+<h2>Product images for ##name## (id ##id##)</h2>
+<img style="float: left; margin-right: 1em" src="##site##/images/products/##thumbnail##" /> 
+##description##
+<hr style="clear: left;"/>
+<div>
+<img src="##site##/images/products/##image##" /><br/>
+</div>
+<br/>
+Actions: <a href="##site##admin/products">Close images view</a><br/>
+<form action="##site##admin/product/images/##id##" method="POST" enctype="multipart/form-data">
+<br/>
+Select image to upload:
+<input type="file" name = "picture" /><br/>
+<input type="submit" value ="Upload file" />
+</form>
+<span class="error">##imageError##</span>
+</div>

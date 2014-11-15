@@ -1,0 +1,7 @@
+{ 
+	"name": "Test of URI class",
+	"author": "Mike Lopez",
+	"unitTest": "UriTest"
+}
+
+

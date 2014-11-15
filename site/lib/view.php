@@ -1,6 +1,5 @@
 <?php
 include 'lib/menuBar.php';
-
 class View {
 	private $context;
 	private $model;
@@ -8,6 +7,7 @@ class View {
 	private $template;
 	private $fields;
 	private $content;
+	
 	private $subviewTemplate;
 	private $subviewFields;
 
@@ -77,17 +77,11 @@ class View {
 			$menu->setMenuItem('a', '##site##logout', 'Log out') ;
 			$menu->setMenuItem('b', '##site##admin/categories', 'Categories') ;
 			$menu->setMenuItem('c', '##site##admin/products', 'Products') ;
-			$menu->setMenuItem('d', '##site##admin/customers', 'Customers') ;
-
-			$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
-
-			$menu->setMenuItem('e', '##site##admin/orders', 'Unsent orders') ;
-			$menu->setMenuItem('f', '##site##checkout', 'Check out') ;
-
+			$menu->setMenuItem('d', '##site##admin/people', 'People') ;
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
-			$menu->setMenuItem('b', '##site##login', 'Log in') ;	
-			$menu->setMenuItem('c', '##site##checkout', 'Check out') ;			
+			$menu->setMenuItem('b', '##site##products', 'Our products') ;				
+			$menu->setMenuItem('c', '##site##login', 'Log in') ;	
 		}
 	
 		if ($this->subviewTemplate!==null) {
@@ -102,6 +96,3 @@ class View {
 	}
 }
 ?>
-
-
-

@@ -11,6 +11,7 @@ class TestModel extends AbstractModel {
 	private $unitTest;
 	private $asserts;
 	private $failures;
+	private $timeTaken;
 	
 	public function __construct($db,$context,$filename) {
 		
@@ -22,7 +23,8 @@ class TestModel extends AbstractModel {
 		$this->setupSQL=null;	
 		$this->unitTest=null;
 		$this->asserts=0;
-		$this->failures=0;	
+		$this->failures=0;
+		$this->timeTaken=0;
 		$this->load($filename);
 	}
 	
@@ -64,15 +66,17 @@ class TestModel extends AbstractModel {
 	public function getFailures() {
 		return $this->failures;
 	}
-	
+	public function getTimeTaken() {
+		return $this->timeTaken;
+	}
 	public function runTest() {
+		$t1 = microtime(true);
 		try {
 			if ($this->setupSQL !== null) {
 				foreach ($this->setupSQL as $sql) {
 					$sql=trim($sql);
 					if (substr($sql,0,2)!=='--') {
 						$this->getDB()->execute($sql);
-						//echo $sql."<br/>\n";
 					}
 				}
 			}
@@ -88,6 +92,7 @@ class TestModel extends AbstractModel {
 		} catch (Exception $ex) {
 			$this->outcome='There is an error in the set up of this test. The exception is: '.$ex->getMessage();
 		}
+		$this->timeTaken = microtime(true)-$t1;
 	}
 	
 	private function loadSQL($filename) {	

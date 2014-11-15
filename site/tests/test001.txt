@@ -1,7 +1,7 @@
 { 
-	"name": "Set up database",
+	"name": "Set up database test data",
 	"author": "Mike Lopez",
-	"SQLscript": "sql/database.sql"
+	"SQLscript": "sql/testData.sql"
 }
 
 

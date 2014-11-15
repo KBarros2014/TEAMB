@@ -119,8 +119,9 @@ td {
 .even td {
 	background-color: #ddd;
 }
+td.r { text-align: right;}
 
-form label {
+label {
 	display: block;
 	margin-left: 1em;
 	margin-right: 1em;
@@ -129,7 +130,7 @@ form label {
 	text-align: right;
 }
 
-form input, textarea {
+input, textarea, select {
 	display: block;
 	margin-left: 1em;
 	width: 18em;

@@ -1,28 +1,21 @@
 <div class="adminEdit">
 <h2>Editing Product ##id##</h2>
 <form action="##site##admin/product/edit/##id##" method="POST">
-Product
- tName<br/>
-<input type="text" name="name" value ="##name##" />
+Product name<br/>
+<input type="text" name="name" value="##name##" />
 <span class="error">##nameError##</span>
 Description<br/>
-<textarea name="description"value="##description##" rows="5"> 
-
+<textarea name="description" rows="5">
+##description##
 </textarea>
 <span class="error">##descriptionError##</span>
-<br/><br/>
-Price
+Price<br/>
 <input type="text" name="price" value="##price##" />
-<!--you need the damm priceERrps kab-->
-<span class="error">##priceError##</span>
+<span class="error">##priceError##</span><br/>
+Category<br/>
+##categoryList##
+<span class="error">##categoryError##</span>
 <br/><br/>
-Picture
-<input type="text" name="picture" value="##picture##"/>
-<span class="error">##pictureError##</span>
-<br/><br/>
-Category
-<select name="category" value="##categories##">
-<span class="error">##pictureError##</span>
-<input type="submit" value ="save products" />
+<input type="submit" value ="save product" />
 </form>
 </div>

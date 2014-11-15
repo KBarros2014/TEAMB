@@ -6,20 +6,18 @@ class CategoryTest extends UnitTest {
 	function __construct($context) {
 		parent::__construct($context);
 	}
-
-	protected function doTests() {
+	protected function testStaticMethods() {
 		$context=$this->getContext();
 		$db=$context->getDB();
 
-		// static method tests
-		$OKname= str_repeat('x',30);
-		$longName= str_repeat('x',31);
+		$OKname= str_repeat('x',40);
+		$longName= str_repeat('x',41);
 		$OKdesc=str_repeat('x',200);
 		$longDesc=str_repeat('x',201);
 	
 		$this->assertEqual(CategoryModel::errorInName(null),'Category name must be specified','name validation');
 		$this->assertEqual(CategoryModel::errorInName(''),'Category name must be specified','name  validation');
-		$this->assertEqual(CategoryModel::errorInName($longName),'Category name must have no more than 30 characters','name validation');
+		$this->assertEqual(CategoryModel::errorInName($longName),'Category name must have no more than 40 characters','name validation');
 		$this->assertEqual(CategoryModel::errorInName($OKname),null,'name validation');
 		
 		$this->assertEqual(CategoryModel::errorInDescription(null),'Description must be specified','description validation');
@@ -31,12 +29,21 @@ class CategoryTest extends UnitTest {
 		$this->assertFalse(CategoryModel::isExistingId($db,'xx'),'ID existence alpha');
 		$this->assertFalse(CategoryModel::isExistingId($db,2 ),'ID existence false');
 		$this->assert(CategoryModel::isExistingId($db,1 ),'ID existence true');
+	}
+	protected function testDefaults() {
+		$context=$this->getContext();
+		$db=$context->getDB();
 
 		$cat=new CategoryModel($db);
 		$this->assertEqual($cat->getID(),null,"Default id should be null");
 		$this->assertEqual($cat->getName(),null,"Default name should be null");
 		$this->assertEqual($cat->getDescription(),null,"Default description should be null");
 		$this->assertFalse($cat->hasChanges(),'Default Should be unchanged');
+	}
+	
+	protected function testUpdateMethod() {
+		$context=$this->getContext();
+		$db=$context->getDB();
 
 		$cat=new CategoryModel($db,1);
 		$this->assertEqual($cat->getID(),'1',"category 1 id");
@@ -55,7 +62,12 @@ class CategoryTest extends UnitTest {
 		$this->assertEqual($cat->getID(),1,"category 1 id");
 		$this->assertEqual($cat->getName(),'Category one (edited)','category 1 name');
 		$this->assertEqual($cat->getDescription(),'Description of category one (edited)',"category 1 description");
-	
+
+	}
+	protected function testInsertMethods() {
+		$context=$this->getContext();
+		$db=$context->getDB();
+		
 		$cat=new CategoryModel($db);
 		$this->assertFalse($cat->hasChanges(),'Default Should be unchanged');
 		$this->assertEqual($cat->getID(),null,"Default id should be null");
@@ -67,7 +79,7 @@ class CategoryTest extends UnitTest {
 		$this->assertEqual($cat->getName(),'Category two',"category 2 name");
 		$cat->save();		
 		$this->assertEqual($cat->getID(),2,"after insert, id should be 2");
-		$this->assertFalse($cat->hasChanges(),'category 2 should be unchanged');		
+		$this->assertFalse($cat->hasChanges(),'category 2 should be unchanged after insert');		
 		
 		$cat->setName('name changed');
 		$this->assertEqual($cat->getName(),'name changed',"category 2 name");
@@ -78,7 +90,12 @@ class CategoryTest extends UnitTest {
 	
 		$cat->save();		
 		$this->assertEqual($cat->getID(),2,"after save, id should be 2");
-		$this->assertFalse($cat->hasChanges(),'category 2 should be unchanged');		
+		$this->assertFalse($cat->hasChanges(),'category 2 should be unchanged after save');		
+	}
+	protected function testDeleteMethods() {
+		$context=$this->getContext();
+		$db=$context->getDB();
+		
 		
 		$cat=new CategoryModel($db,2);
 		$this->assertEqual($cat->getId(),2,"category 2 id");

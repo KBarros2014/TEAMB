@@ -19,8 +19,8 @@ class UserTest extends UnitTest {
 		$this->assertEqual($user->getEmail(),null,"Default email should be blank (anonymous user)");
 		$this->assertFalse($user->isMember(),"Anonymous user should not have membership rights");
 		$this->assertFalse($user->isAdmin(),"Anonymous user should not have administrator rights");
-		$this->assert(abs($user->getDateCreated()-$timestamp)<2,"Date created should be around now");
-		$this->assert(abs($user->getLastLogin()-$timestamp)<2,"Last login should be around now");
+		$this->assert(abs($user->getDateCreated()-$timestamp)<5,"Date created should be around now");
+		$this->assert(abs($user->getLastLogin()-$timestamp)<5,"Last login should be around now");
 		
 		// check login as Mike Lopez (administrator)
 		$user->login("mike.lopez@cpit.ac.nz","cabbages");
@@ -30,17 +30,17 @@ class UserTest extends UnitTest {
 		$this->assert($user->isMember(),"Mike Lopez should have membership rights");
 		$this->assert($user->isAdmin(),"Mike Lopez  should have administrator rights");
 		$this->assert($timestamp-$user->getDateCreated()>25*24*3600,"Date created should be at least 25 days ago");
-		$this->assert(abs($user->getLastLogin()-$timestamp)<2,"Last login should be around now");
+		$this->assert(abs($user->getLastLogin()-$timestamp)<5,"Last login should be around now");
 	
 		// check login as Mike Lance (member)
-		$user->login("lancem@cpit.ac.nz","peanuts");
+		$user->login("lancem@cpit.ac.nz","chocolate");
 		$this->assertEqual($user->getUserID(),2,"Mike Lance userid should be 2");
 		$this->assertEqual($user->getName(),"Mike Lance","Username should be Mike Lance");
 		$this->assertEqual($user->getEmail(),'lancem@cpit.ac.nz',"Email should be lancem@cpit.ac.nz");
 		$this->assert($user->isMember(),"Mike Lance should have membership rights");
 		$this->assertFalse($user->isAdmin(),"Mike Lance should not have administrator rights");
 		$this->assert($timestamp-$user->getDateCreated()>25*24*3600,"Date created should be at least 25 days ago");
-		$this->assert(abs($user->getLastLogin()-$timestamp)<2,"Last login should be around now");
+		$this->assert(abs($user->getLastLogin()-$timestamp)<5,"Last login should be around now");
 	
 		// Make sure logout is OK
 		$user->logout();
@@ -67,4 +67,3 @@ class UserTest extends UnitTest {
 	}
 }
 ?>
-	

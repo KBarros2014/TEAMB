@@ -64,21 +64,22 @@ abstract class crudController extends AbstractController {
 				$this->subviewTemplate = $this->getTemplateForDelete();
 				return $this->handleDelete($isPostback,$uri->getID());	
 			default:
-				throw new InvalidRequestException ("Invalid action in URI");
+				return $this->extraActions ($isPostback, $action);
 		}	
 	}
-
+	protected function extraActions ($isPostback, $action) {
+			throw new InvalidRequestException ("Invalid action ($action) in URI");
+	}	
 	private function handleEdit($postback, $id=null) {
-	
 		if (!$postback) {
 			$model=$this->createModel($id); // subclass will create 
 			$this->getModelData($model);	// subclass will call setfield for each field
-			return $this->createView($id); 			// form with data from DB (or blank if ID null)		
+			return $this->createView($id); 	// form with data from DB (or blank if ID null)		
 		} else {
 			// get user data
 			$this->getFormData();			// subclass will call setfield and seterror
 			if ($this->hasErrors) {
-				return $this->createView($id); 		// form with user data and errors
+				return $this->createView($id); 	// form with user data and errors
 			} else {
 				$model=$this->createModel($id);  // subclass will create
 				$this->updateModel($model);		 // subclass will update and redirect
@@ -110,7 +111,7 @@ abstract class crudController extends AbstractController {
 		}
 	}
 
-	private function createView($id) {
+	protected function createView($id) {
 		$view=new View($this->getContext());
 		$view->setTemplate('html/masterPage.html');
 		$view->setTemplateField('pagename',$this->getPagename());

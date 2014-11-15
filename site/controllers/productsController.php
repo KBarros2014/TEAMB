@@ -2,43 +2,45 @@
 /*
    A PHP framework for web sites by Mike Lopez
    
-   Sample CRUD controller for a list of categories
-   ===============================================
+   Sample CRUD controller for a list of products
+   =============================================
    
 */
-include 'lib/abstractController.php';
-include 'lib/view.php';
+include 'lib/listController.php';
 include 'lib/tableView.php';
 
-
-class ProductsController extends AbstractController {
+class ProductsController extends ListController {
 
 	public function __construct($context) {
 		parent::__construct($context);
+		$this->setRecordsPerPage(12);
+		$this->setMaxPages(10);
+		$this->setLinkRoot('##site##admin/products');
 	}
-	protected function getView($isPostback) {
-		$db=$this->getDB(); 
-		$sql="select productID, productName from products order by productName asc";
-		$rows=$db->query($sql);
-		if (count($rows)==0) {
-			$html='<p>There are no Products</p>'; 
-		
-		} else {
+	protected function getCountSQL() {
+		return "select count(productID) from products";
+	}
+	protected function getSelectionSQL() {
+		return "select productID, name from products order by name asc";
+	}
+	protected function getPageName() {
+		return 'Products';
+	}
+	protected function getNoRowsHtml() {
+		return '<p>There are no products</p>';
+	}
+	protected function getHtmlForRows($rows) {
 			$table = new TableView($rows);
-			$table->setColumn('productName','Product name'); 
+			$table->setColumn('name','Product name');
 			$table->setColumn('action','Action',
 				'&nbsp;<a href="##site##admin/product/view/<<productID>>">View</a>'.
 				'&nbsp;<a href="##site##admin/product/edit/<<productID>>">Edit</a>'.
-				'&nbsp;<a href="##site##admin/product/delete/<<productID>>">Delete</a>'); 
-			$html=$table->getHtml();
-			$html.='<p><a href="##site##admin/product/new">Add a new product</a></p>';
-		}	
-		$view= new View($this->getContext());	
-		$view->setModel(null);
-		$view->setTemplate('html/masterPage.html');
-		$view->setTemplateField('pagename','Products');
-		$view->addContent($html);
-		return $view;
+				'&nbsp;<a href="##site##admin/product/delete/<<productID>>">Delete</a>'.
+				'&nbsp;<a href="##site##admin/product/images/<<productID>>">Images</a>');			
+			 return $table->getHtml();
+	}
+	protected function getExtraHtml() {
+		return '<p><a href="##site##admin/product/new">Add a new product</a></p>';
 	}
 }
 ?>

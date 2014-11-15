@@ -29,4 +29,3 @@ class UriTest extends UnitTest {
 	}
 }
 ?>
-	

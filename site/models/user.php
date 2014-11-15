@@ -1,6 +1,12 @@
 <?php
+/*
+   A PHP framework for web sites by Mike Lopez
+   
+   A sample user model
+   ===================
 
-// add setPassword etc
+*/
+
 
 class User {
 	private $db;			// object
@@ -78,7 +84,26 @@ class User {
 		}
 		return $this->isAdmin;
 	}	
-	/*
+	public function login($email, $password) {
+		$userID=$this->isValidLogin($this->db, $email, $password);
+		if ($userID===false) {
+			throw new LoginException ('Invalid credentials');
+		}
+		$timestamp=date('Y-m-d H:i:s',time());
+		$sql="update users set lastLogin='$timestamp';";
+		$this->db->execute($sql);
+
+		$this->session->changeContext();
+		$this->session->set('userID',$userID);
+		$this->init();
+	}
+	public function logout() {
+		$this->session->unsetKey('userID');
+		$this->session->changeContext();
+		$this->init();
+	}
+	
+	/**
 		@return: false if invalid
 		         userID if valid
 	*/
@@ -102,41 +127,18 @@ class User {
 		$row=$result[0];
 		$userID=$row['userID'];
 		$check=$row['pwCheck'];
-		
-		$input=sha1($password.'security 101');  // just a tad more salt!
-		
-		if ($check==null) {
-			echo '<br/>pWord: '.$password;
-			echo '<br/>Input: '.$input;
-			echo '<br/>Check: '.User::createPasswordCheck($input);
-		}
-	
-		if (crypt($input, $check) == $check){
+
+//     debugging only		
+//		if ($check==null || strlen($check)==0) {
+//			echo '<br/>new c: '.User::createPasswordCheck($password);
+//		}
+		if (!self::checkValidity($password,$check)){
 			sleep(1);
 			return false;
 		}
-		
 		return $userID;
 	}
-	public function login($email, $password) {
-		$userID=$this->isValidLogin($this->db, $email, $password);
-		if ($userID===false) {
-			throw new LoginException ('Invalid credentials');
-		}
-		
-		$timestamp=date('Y-m-d H:i:s',time());
-		$sql="update users set lastLogin='$timestamp;'";
-		$this->db->execute($sql);
-		
-		$this->session->set('userID',$userID);
-		$this->session->changeContext();
-		$this->init();
-	}
-	public function logout() {
-		$this->session->unsetKey('userID');
-		$this->session->changeContext();
-		$this->init();
-	}
+	
 		// output should be 75 chars 
 	private static function createPasswordCheck ($password) {
 		$input=sha1($password.'security 101');
@@ -144,9 +146,18 @@ class User {
 		// salt alphabet
 	    $chars='./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		// generate random salt
-		for($i=0;$i<16;$i++) $salt.=$chars[mt_rand(0,63)]; 
-		// let crypt do the heavy lifting
-		return crypt($input,'$5$rounds=5000$'.$salt);
+		for($i=0;$i<16;$i++) {
+			$salt.=$chars[mt_rand(0,63)]; 
+		}
+		// let crypt do the heavy lifting		
+		$cipher=crypt($input,'$5$rounds=5000$'.$salt);
+		return $cipher;
 	}	
+	
+	private static function checkValidity ($password,$check) {
+		$input=sha1($password.'security 101');
+		$cipher=crypt($input, $check);
+		return ($cipher == $check); 
+	}
 }
 ?>

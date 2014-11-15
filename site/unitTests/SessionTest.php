@@ -28,4 +28,3 @@ class SessionTest extends UnitTest {
 	}
 }
 ?>
-	

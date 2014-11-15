@@ -32,8 +32,6 @@ class ListSelectionView {
 	private $valueColumn;
 	private $selected;
 	
-	
-	
 	public function __construct($rowset) {
 		$this->data=$rowset;
 		$this->formName=null;
@@ -70,12 +68,11 @@ class ListSelectionView {
 			$html.=$id.'"';
 			if ($id == $this->selected) {
 				$html.=' selected="selected"';
-				
-				$html.=">$value</option>\n";
+			}
+			$html.=">$value</option>\n";
 		}
 		$html.="</select>\n";
 		return $html;
 	}
-}
 }
 ?>
