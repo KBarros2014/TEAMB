@@ -1,5 +1,6 @@
 <?php
 //kB
+include_once 'models/category.php';
 class ProductModel extends AbstractModel {
 
 	private $productId;
@@ -8,6 +9,7 @@ class ProductModel extends AbstractModel {
 	private $productPrice=null;
 	private $productPic=null;
 	private $changed;
+	private $category;
 	private $catID = null;
 	/*
 	
@@ -43,7 +45,7 @@ class ProductModel extends AbstractModel {
 	public function getProductName() {
 		return $this->productName;
 	}
-	public function setProductId($value){
+	public function setCategoryId($value){
 	$error=$this->errorInProductCat($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -54,6 +56,12 @@ class ProductModel extends AbstractModel {
 	public function getCategoryId(){
 		return $this->catID;
 	
+	}
+	public function getCategory() {
+		if ($this->category == null) {
+			$this->category = new CategoryModel ($this->getDB(), $this->catID);
+	}
+	return $this->category;
 	}
 	public function setProductName($value) {
 		$error=$this->errorInProductName($value);
