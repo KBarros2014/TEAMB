@@ -79,7 +79,7 @@ class View {
 			$menu->setMenuItem('c', '##site##admin/products', 'Products') ;
 			$menu->setMenuItem('d', '##site##admin/customers', 'Customers') ;
 
-			$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
+			//$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
 
 			$menu->setMenuItem('e', '##site##admin/orders', 'Unsent orders') ;
 			$menu->setMenuItem('f', '##site##checkout', 'Check out') ;
@@ -87,7 +87,8 @@ class View {
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
 			$menu->setMenuItem('b', '##site##login', 'Log in') ;	
-			$menu->setMenuItem('c', '##site##checkout', 'Check out') ;			
+			$menu->setMenuItem('c', '##site##checkout', 'Check out') ;
+			$menu->setMenuItem('g', '##site##checkout', 'Visit') ;
 		}
 	
 		if ($this->subviewTemplate!==null) {
