@@ -33,13 +33,13 @@ class CategoryModel extends AbstractModel {
 		}
 	}
 	
-	
 	private function init() {
 		$this->id=null;
 		$this->name=null;
 		$this->description=null;
 		$this->changed=false;		
 	}
+	
 	public function load($id) {
 		if (!is_int($id) && !ctype_digit($id)) {
 			throw new InvalidDataException("Invalid category ID ($id)");
@@ -62,6 +62,14 @@ class CategoryModel extends AbstractModel {
 	}
 	public function getName() {
 		return $this->name;
+	}
+	public function getAll(){
+		$sql="select * from categories";
+		$rows=$this->getDB()->query($sql);
+		if (count($rows) < 1) {
+			throw new InvalidDataException("No categories found");
+		}
+		return $rows;
 	}
 	public function getDescription() {
 		return $this->description;

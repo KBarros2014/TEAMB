@@ -32,80 +32,95 @@ class ProductController extends CrudController {
 		return 'Products'; 
 	} 
 
-	// the following methods are the must-overrides in the Crud controller
+	//Add new product page
 	protected function getTemplateForNew () {
 		return 'html/forms/adminProductNew.html'; 
 	}
+
+	//Edit product page
 	protected function getTemplateForEdit () {
 		return 'html/forms/adminProductEdit.html'; 
 	}
+
+	//Delete product
 	protected function getTemplateForDelete () {
 		return 'html/forms/adminProductDelete.html';
 	}
+
+	//View product page
 	protected function getTemplateForView () {
 		return 'html/forms/adminProductView.html';
 	}
+
+	//Initialises the model
 	protected function createModel($id) {
 		return new ProductModel($this->getDB(),$id);
 	}
-	private function getCategoryList($selectedID) {
-		$db=$this->getDB();
-		$sql='select catID, catName from categories order by catName';
-		$rowset=$db->query($sql);
-		$list = new ListSelectionView($rowset);
-		$list->setFormName ('catID');
-		$list->setIdColumn ('catID');
-		$list->setValueColumn ('catName');
-		$list->setSelectedId ($selectedID);	
+
+	//This function takes the rows supplied and returns
+	//the html for select drop down
+	private function getCategoryListView($rows, $categoryID = null) {
+		$list = new ListSelectionView($rows);
+		$list->setFormName('catID');
+		$list->setIdColumn('catID');
+		$list->setValueColumn('catName');
+		if(isset($categoryID)){
+			$list->setSelectedId($categoryID);
+		}
 		return $list->getHtml();
 	}
+
+	//Gets the product data 
 	protected function getModelData($model) {
 		$this->setField('name', $model->getProductName());
 		$this->setField('description',$model->getProductDescription());	//	for the tests
 		$this->setField('price',$model->getProductPrice());		
 		$this->setField('picture',$model->getProductPic());	
-		$this->setField('catID', $model->getCategory()->getName().'('.$model->getCategoryId().')');
-		$this->setField('categoryList', $this->getCategoryList($model->getCategoryId()));
+
+		if($model->getCategoryId() !== null){
+			$category_model = new CategoryModel($this->getDB(), $model->getCategoryId()); //initialise the category model
+		}else{
+			$category_model = new CategoryModel($this->getDB()); //initialise the category model
+		}
+
+		$this->setField('category', $category_model->getName());
+		$this->setField('categoryList', $this->getCategoryListView($category_model->getAll(), $model->getCategoryId()));
 	}
 	
+
+	//Get the input form data and set the product model fields
 	protected function getFormData() {
-		$price=$this->getInput('price');
-		$this->setField('price', $price);
-			$error=ProductModel::errorInProductPrice($price);
-		if ($error!==null) {
-			$this->setError ('price',$error);
-		}
-	
 		$name=$this->getInput('name');
 		$this->setField('name', $name);
 		$error=ProductModel::errorInProductName($name);
 		if ($error!==null) {
 			$this->setError ('name',$error);
 		}
-		/*
-		The product controller should present the drop-down list and set the model's category to the one chosen by the user.
- 
-        */
+
+		$description=$this->getInput('description');
+		$this->setField('description', $description);
+		$error=ProductModel::errorInProductDescription($description);
+		if ($error!==null) {
+			$this->setError ('description',$error);
+		}
+
+		$price=$this->getInput('price');
+		$this->setField('price', $price);
+		$error=ProductModel::errorInProductPrice($price);
+		if ($error!==null) {
+			$this->setError ('price',$error);
+		}
+		
 		$catID=$this->getInput('catID');
 		$this->setField('catID', $catID);
-			//	echo $catID."hello world<br/>";//for test just to check html tag kb I thoug javascript forgont the post 
-        //  $catID =(int)$catID;
-		  		//var_dump($catID);
-				echo $catID;
 		$error=ProductModel::errorInProductCat($catID);
 		if ($error!==null) {
 			$this->setError ('catID',$error);
-
 		}
-		$description=$this->getInput('description');
-		$this->setField('description', $description);
-		$error = ProductModel::errorInProductDescription($description);
-		if ($error!==null) {
-			$this->setError ('description',$error);
-		} 
-		return null;
 	}
-	 private function getCategories($selectedID) {
+	
+	//Duplicate? You should get the categories using category model
+	private function getCategories($selectedID) {
 		$db = $this->getDB();
 		$sql ='select catID, name from categories order by name';
 		$rowset= $db->query($sql);
@@ -114,21 +129,18 @@ class ProductController extends CrudController {
 		$list = setFormName('categoryID');
 		$list = setIdColumn('categogyID');
 		return $list->getHtml();
-	 
-	 
-	 
-	 
-	 }
+	}
+
 	protected function updateModel($model) {
 		$productName=$this->getField('name');//get infro from input boxes 
 		$description=$this->getField('description');
 		$productPrice=$this->getField('price');
-		$catID=$this->getField('catID');// for test get html data which is a list of categories ex technology furniture ect  
+		$catID=$this->getField('catID'); // for test get html data which is a list of categories ex technology furniture ect  
 		//$catID =(int)$catID; //categroy id is an integer kab transforms that options into integers
 		//var_dump($catID);//what type we got
 		$model->setProductName($productName);
 		$model->setProductPrice($productPrice);
-		$model->setDescription($description);
+		$model->setProductDescription($description);
 		$model->setCategoryId($catID);
 		$model->save();
 		$this->redirectTo('admin/products',"Product '$productName' has been saved");

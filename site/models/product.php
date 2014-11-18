@@ -57,12 +57,12 @@ class ProductModel extends AbstractModel {
 		return $this->catID;
 	}
     
-    public function getCategory() {
+    /*public function getCategory() {
 		if ($this->category == null) {
 			$this->category = new CategoryModel ($this->getDB(), $this->catID);
-	}
-	return $this->category;
-	}
+		}
+		return $this->category;
+	}*/
     
 	public function setProductName($value) {
 		$error=$this->errorInProductName($value);
@@ -107,7 +107,7 @@ class ProductModel extends AbstractModel {
 	if (!is_int($productId) && !ctype_digit($productId)) {
 			throw new InvalidDataException("Invalid product ID ($productId)");
 		}
-		$sql="select productName, productDescription, productPrice, productPic from products ".
+		$sql="select productName, productDescription, productPrice, productPic, catID from products ".
 			 "where productID = $productId";
 		$rows=$this->getDB()->query($sql);
 		//echo $rows;
@@ -119,9 +119,10 @@ class ProductModel extends AbstractModel {
 		$row=$rows[0];
 		$this->productName=$row['productName'];
 		$this->productDescription=$row['productDescription'];
-		$this->producPrice= $row['productPrice'];  
+		$this->productPrice= $row['productPrice'];  
 		$this->productPic=$row['productPic'];//we do not have picutre 
 		$this->productId=$productId;
+		$this->catID = $row['catID'];
 		$this->changed=false;
 	}
 	
@@ -152,9 +153,10 @@ class ProductModel extends AbstractModel {
             } else {
                 $sql="update products ".
 					"set productName='$productName', ".
-			        "productDescription='$productDescription' ".
-					"productPrice ='$productPrice' ".
-					"productPic ='$productPic' ".
+			        "productDescription='$productDescription', ".
+					"productPrice ='$productPrice', ".
+					"productPic ='$productPic', ".
+					"catID = '$catID' ".
 					"where productID= $productId";
                 if ($db->execute($sql) !== 1) {
 				throw new InvalidDataException("Update product failed");	
