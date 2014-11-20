@@ -1,34 +1,10 @@
-<?php
-/*	Note that this model does NOT use the database!
 
-	Usage:
-	1) To access the cart (do this before any other actions)
-		$cart = new ShoppingCart($context);
-	2) to add an item to a cart
-		$item = new ShoppingCartItem ($productCode, $quantity, $price)
-		$cart->addItem($item);
-	3) to inspect the cart ...
-		a) number of items
-			$n = $cart->getCount();
-		b) total quantity
-			$totalQuantity = $cart->getTotalQuantity();
-		c) total price
-			$totalPrice = $cart->getTotalPrice();
-		d) retrieve an item
-			$item=$cart->getAt($index);
-	4) To remove an item from the cart
-		$cart->removeAt($index);
-	5) To empty the cart
-		$cart->delete();
+<?php 
 
-	Further work:
-		The Order class will need a method CreateFromCart($cart, ...)
-		(This should create the order and empty the cart)
-		
-*/
 class ShoppingCart {
 	private $context;
 	private $cart;
+	private $customerId;
 	
 	function __construct (IContext $context) {
 		$this->context=$context;
@@ -38,6 +14,15 @@ class ShoppingCart {
 			$this->cart=array();
 		}
 	}
+	public function setCustomerId($cust) { //kb
+		$this->customerId = $cust;
+	
+	
+	}
+	public function getCustomerId() { //kb
+		return $this->customerId;
+	}
+
 	private function  save() {
 		$this->context->getSession()->set('cart',$this->cart);
 	}

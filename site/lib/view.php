@@ -79,17 +79,16 @@ class View {
 			$menu->setMenuItem('c', '##site##admin/products', 'Products') ;
 			$menu->setMenuItem('d', '##site##admin/customers', 'Customers') ;
 
-			$menu->setMenuItem('e', '##site##admin/orders', 'Orders') ;
+			//$menu->setMenuItem('d', '##site##admin/orders', 'Orders') ;
 
-			$menu->setMenuItem('f', '##site##admin/orders', 'Unsent orders') ;
-			//$menu->setMenuItem('g', '##site##checkout', 'Check out') ;
+			$menu->setMenuItem('e', '##site##admin/orders', 'Unsent orders') ;
+			$menu->setMenuItem('f', '##site##checkout', 'Check out') ;
 
 		} else {
 			$menu->setMenuItem('a', '##site##', 'Home') ;
 			$menu->setMenuItem('b', '##site##login', 'Log in') ;	
 			$menu->setMenuItem('c', '##site##checkout', 'Check out') ;
-		//	$menu->setMenuItem('d', '##site##shoppingCart', 'Cart') ;
-			$menu->setMenuItem('e', '##site##productsViewer', ' Our Products') ;
+			$menu->setMenuItem('g', '##site##checkout', 'Visit') ;
 		}
 	
 		if ($this->subviewTemplate!==null) {

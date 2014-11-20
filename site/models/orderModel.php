@@ -1,6 +1,6 @@
 <?php
 //Alex
-include 'models/ShoppingCart.php';
+include 'models/myShoppingCart.php';
 include 'lib/abstractModel.php';
 
 class orderModel extends  AbstractModel{

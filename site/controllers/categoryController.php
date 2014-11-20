@@ -30,7 +30,7 @@ class CategoryController extends CrudController {
 	protected function getPagename(){
 		return 'Categories';
 		//echo ' for adding categories';
-	}  
+	}
 	
 	// the following methods are the must-overrides in the Crud controller
 	protected function getTemplateForNew () {

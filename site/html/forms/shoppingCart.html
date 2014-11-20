@@ -1,20 +1,15 @@
-                                                                                                                       <div class="adminEdit">
-<h2>New Customer</h2>
-<form action="##site##admin/customer/new/##id##" method="POST">
-Customer<br/>
-<input type="text" name="Firstname" value="##Firstname##" /><br/>
-<span class="error">##FirstnameError##</span><br/>
-<input type="text" name="Lastname" value="##Lastname##" /> <br/>
-<span class="error">##LastnameError##</span><br/>
-<input type="text" name="Address" value="##Firstname##" /> <br/>
-<span class="error">##FirstnameError##</span><br/>
-<input type="text" name="City" value="##City##" /> <br/>
-<span class="error">##CityError##</span><br/>
-<input type="text" name="Postcode" value="##Postcode##" /><br/>
-<span class="error">##PostcodeError##</span><br/>
-<input type="email" name="Email" value="##Email##" /><br/>
-<span class="error">##EmailError##</span><br/>
+<div class = "thumbnail" style="float: left; width = 20em; margin: 0.5em 1em;">
+##thumbnail##
+<p style="text-align: center;"><strong>$##price##</strong></p>
+</div>
+	
+<div class = "info" style ="float: left;">
+<h2><a href="##site##product/##id##">##name##</a></h2>
+Quantity:<br/><br/>
+<input type="text" name="quantity">
 <br/><br/>
-<input type="submit" value ="save customer" />
-</form>
+<input type="submit" value="Confirm">
+<div class = "productPanel" >
+</div>
+<hr style = "clear: left;" />
 </div>
