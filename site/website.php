@@ -55,6 +55,8 @@
 		switch ($path) {
 			case 'admin':
 				return getAdminController($context);
+			case 'noadmin':
+				return getNoAdminController($context);
 			case '':
 				$uri->prependPart('home');
 				return 'Static';
@@ -64,8 +66,8 @@
 				return 'Login';
 			case 'logout':
 				return 'Logout';
-			case "checkout":
-				return "Checkout";
+			case 'visit':
+				return 'Visits';
 			default:
 				throw new InvalidRequestException ("No such page");
 		}
@@ -92,25 +94,21 @@
 				return 'Customers';
 		    case 'customer':
 				return 'Customer';
-
 			case 'orders':
 				return 'Orders';
 			case 'order':
 				return 'Order';
-
 			case 'order':
 				return 'Order';
 			case 'orders':
 				return 'Orders';
 			case 'checkout':
 				return 'Checkout';
-			
-
 			default:
 				throw new InvalidRequestException ('No such page');
 		}
+		
 	}
 	
+
 ?>
-
-
