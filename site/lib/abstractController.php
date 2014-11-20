@@ -76,6 +76,5 @@ abstract class AbstractController {
 	private function sanitise($input) {
 		return htmlspecialchars($input, ENT_QUOTES);
 	}
-	
 }
 ?>
