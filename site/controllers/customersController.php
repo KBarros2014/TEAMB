@@ -39,8 +39,7 @@ class CustomersController extends AbstractController {
 		}
 		$offset=($pageNumber - 1) * $limit;
 		
-		$db=$this->getDB();
-	
+		$db=$this->getDB();	
 		$sql="select customerId, customerFirstName, customerLastName, customerAddress
 , customerCity, customerPostCode, customerEmail, isBusinessAccount from customers order by customerFirstName asc Limit $limit offset $offset";
 		$rows=$db->query($sql);
@@ -59,9 +58,9 @@ class CustomersController extends AbstractController {
 			$html=$table->getHtml();
 			$html.='<p><a href="##site##admin/customer/new">Add a new customer</a></p>';
 		for ($i=1; $i <= $totalPages; $i++ ) {
-			$html .="<a href=\"##site##admin/categories/$i\" > $i </a>";
+			$html .="<a href=\"##site##admin/customers/$i\" > $i </a>";
 			
-		}		
+			}		
 		}	
 		$view= new View($this->getContext());	
 		$view->setModel(null);
