@@ -8,7 +8,6 @@ class CustomerModel extends  AbstractModel{
 	private $customerAddress = null;
 	private $customerCity = null;
 	private $customerPostCode =null;
-    private $CSRFtoken = null; // CSRF token
 	private $changed;
 
 	public function __construct($db, $customerId=null) {
@@ -18,6 +17,7 @@ class CustomerModel extends  AbstractModel{
 		if ($customerId !== null) {
 			$this->load($customerId);
 		}
+		
 	}
 	
 	public function getCustomerId() {
@@ -35,8 +35,7 @@ class CustomerModel extends  AbstractModel{
 		return $this->getCustomerFirstName()." ".$this->getCustomerLastName();
 	
 	}
-	
-    public function setCustomerFirstName($value) {
+	public function setCustomerFirstName($value) {
 		$error=$this->errorInCustomerFirstName($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -44,8 +43,7 @@ class CustomerModel extends  AbstractModel{
 		$this->customerFirstName=$value;
 		$this->changed=true;
 	}
-	
-    public function setCustomerLastName($value) {
+	public function setCustomerLastName($value) {
 		$error=$this->errorInCustomerLastName($value);
 		if ($error==null ){
 			throw new InvalidDataException($error);
@@ -53,12 +51,10 @@ class CustomerModel extends  AbstractModel{
 		$this->customerLastName=$value;
 		$this->changed=true;
 	}
-	
-    public function getCustomerPostCode() {
+	public function getCustomerPostCode() {
 		return $this->customerPostCode;
 	}
-	
-    public function setCustomerPostCode($value) {
+	public function setCustomerPostCode($value) {
 		$error=$this->errorInCustomerPostCode($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -66,6 +62,7 @@ class CustomerModel extends  AbstractModel{
 		$this->customerPostCode=$value;
 		$this->changed=true;
 	}
+	
 	
 	public function getCustomerAddress() {
 		return $this->customerAddress;
@@ -79,12 +76,10 @@ class CustomerModel extends  AbstractModel{
 		$this->customerAddress=$value;
 		$this->changed=true;
 	}
-	
-    public function getCustomerCity() {
+	public function getCustomerCity() {
 		return $this->customerCity;
 	}
-	
-    public function setCustomerCity($value) {
+	public function setCustomerCity($value) {
 		$error=$this->errorInCustomerCity($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -98,8 +93,7 @@ class CustomerModel extends  AbstractModel{
 	}
 	
 	private function load($customerId) {
-    //Added CSRF token to sql select
-		$sql="select customerFirstName, customerLastName, customerAddress, customerEmail, CSRFToken from customers ".
+		$sql="select customerFirstName, customerLastName, customerAddress, customerEmail  from customers ".
 			 "where customerId = $customerId";
 		$rows=$this->getDB()->query($sql);
 		if (count($rows)!==1) {
@@ -111,7 +105,6 @@ class CustomerModel extends  AbstractModel{
 		$this->customerAddress=$row['customerAddress'];
 		$this->customerEmail=$row['customerEmail'];
 		$this->customerId=$customerId;
-        $this->CSRFToken==$row['CSRFToken'];
 		$this->changed=false;
 	}
 	
@@ -151,8 +144,7 @@ class CustomerModel extends  AbstractModel{
 		$this->id=$null;
 		$this->changed=false;
 	}
-	
-    //// this functions below should ensure fields are entered kBarrs and I don t fix them now
+	//// this functions below should ensure fields are entered kBarrs and I don t fix them now
 	//a get email address function should be implemented which s pretty stratig foward in customer controller
 	public static function errorInCustomerAddress($value) {
 		if ($value==null || strlen($value)==0) {
@@ -163,8 +155,7 @@ class CustomerModel extends  AbstractModel{
 		}
 		return null;
 	}
-	
-    public static function errorInCustomerEmail($value) { //some checks to be implemented here kb
+	public static function errorInCustomerEmail($value) { //some checks to be implemented here kb
 		if ($value==null || strlen($value)==0) {
 			return 'Email must be specified';
 		}
@@ -173,8 +164,7 @@ class CustomerModel extends  AbstractModel{
 		}
 		return null;
 	}
-	
-    public static function errorInCustomerCity($value) {//some checks to be implemented here kb
+	public static function errorInCustomerCity($value) {//some checks to be implemented here kb
 		if ($value==null || strlen($value)==0) {
 			return 'City must be specified';
 		}
@@ -193,8 +183,7 @@ class CustomerModel extends  AbstractModel{
 		}
 		return null;
 	}
-	
-    public static function errorInCustomerPostCode($value) {
+	public static function errorInCustomerPostCode($value) {
 	
 		if ($value==null || strlen($value)==0) {
 			return 'code must be specified';
@@ -214,13 +203,5 @@ class CustomerModel extends  AbstractModel{
 		}
 		return null;
 	}
-    
-	public static function errorInCSRFToken($value) {
-        $token = 
-		if ($value!=$token) {
-			return 'There was a problem submitting (CSRF Error)';
-		}
-		return null;
 	}
-}
 ?>

@@ -9,6 +9,8 @@ class ProductModel extends AbstractModel {
 	private $productPrice=null;
 	private $productPic=null;
 	private $changed;
+	private $category;
+	private $thumbnail;
 	private $catID = null;
 	/*
 	
@@ -24,7 +26,8 @@ class ProductModel extends AbstractModel {
 		
 	*/
 	
-    public function __construct($db, $productId=null)  { //another field to be inserted here I will work on it after holiday
+	
+	public function __construct($db, $productId=null)  { //another field to be inserted here I will work on it after holiday
 		parent::__construct($db);
 		$this->productId=$productId;
 		//$this->setProductName= ($productName);
@@ -40,11 +43,11 @@ class ProductModel extends AbstractModel {
 		return $this->productId;
 	}
 	
-    public function getProductName() {
+
+	public function getProductName() {
 		return $this->productName;
 	}
-	
-    public function setCategoryId($value){
+	public function setCategoryId($value){
 	$error=$this->errorInProductCat($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -52,18 +55,43 @@ class ProductModel extends AbstractModel {
 	    $this->catID =$value;
 		$this->changed=true;
 	}
-	
-    public function getCategoryId(){
+	public function getCategoryId () {
 		return $this->catID;
+	
+	
 	}
-    
-    /*public function getCategory() {
+	
+	public function getImage() {
+		if ($this->image==null) {
+			$filename = 'p'.$this->getID();
+			if (file_exists('images/products/'.$filename.'.jpg')) {
+				$this->image=$filename.'.jpg';
+			} else {
+				$this->image=$filename.'.png';
+			}
+		}
+		return $this->image;
+	}	
+	public function getThumbnail() {
+		if ($this->thumbnail==null) {
+			$filename = 't'.$this->getProductId();
+			if (file_exists('images/products/'.$filename.'.jpg')) {
+				$this->thumbnail=$filename.'.jpg';
+			} else {
+				$this->thumbnail=$filename.'.png';
+			}
+		}
+		return $this->thumbnail;
+	}	
+	
+	
+	
+	public function getCategory() {
 		if ($this->category == null) {
 			$this->category = new CategoryModel ($this->getDB(), $this->catID);
-		}
-		return $this->category;
-	}*/
-    
+	}
+	return $this->category;
+	}
 	public function setProductName($value) {
 		$error=$this->errorInProductName($value);
 		if ($error!==null ){
@@ -107,7 +135,7 @@ class ProductModel extends AbstractModel {
 	if (!is_int($productId) && !ctype_digit($productId)) {
 			throw new InvalidDataException("Invalid product ID ($productId)");
 		}
-		$sql="select productName, productDescription, productPrice, productPic, catID from products ".
+		$sql="select productName, productDescription, productPrice, productPic from products ".
 			 "where productID = $productId";
 		$rows=$this->getDB()->query($sql);
 		//echo $rows;
@@ -122,49 +150,49 @@ class ProductModel extends AbstractModel {
 		$this->productPrice= $row['productPrice'];  
 		$this->productPic=$row['productPic'];//we do not have picutre 
 		$this->productId=$productId;
-		$this->catID = $row['catID'];
 		$this->changed=false;
 	}
 	
 	public function save() {//save function to be perfected here // to be added more conditions on the contruct
 		if ($this->changed) {
-		    if ($this->productName==null || $this->productPrice==null || $this->productDescription==null ||$this->catID==null) {
-				throw new InvalidDataException("Incomplete data " . $this->productName . ", ". $this->productPrice . ", " . $this->productDescription .", ". $this->catID);
-            }
-		//echo $this->productName." ".$this->productPrice;// just for checking where it breaks kb
-            $db=$this->getDB();
+		              if ($this->productName==null || $this->productPrice==null || $this->productDescription==null ||$this->catID==null) {
+				throw new InvalidDataException("Incomplete data Hi it s me testing again make sure you select cat");
+		}
+		echo $this->productName." ".$this->productPrice;// just for checking where it breaks kb
+	    $db=$this->getDB();
 		
-            $productId=$this->productId;
-            $productName=$this->productName;
-            $productDescription=$this->productDescription;
-            $productPic =$this->productPic;
-            $productPrice= $this->productPrice;//lets see if breaks the code
-            $catID = $this->catID;
-            if ($productId === null) {
-                $sql="insert into products(productName, productDescription, productPrice, productPic,catID) values (".
-                    "'$productName', '$productDescription', '$productPrice','$productPic','$catID')" ;
-                    //echo $sql;
-                $affected=$db->execute($sql);
-                //echo $affected;
-                if ($affected !== 1) {
+		$productId=$this->productId;
+		$productName=$this->productName;
+		$productDescription=$this->productDescription;
+		$productPic =$this->productPic;
+		$productPrice= $this->productPrice;//lets see if breaks the code
+		$catID = $this->catID;
+			if ($productId === null) {
+				$sql="insert into products(productName, productDescription, productPrice, productPic,catID) values (".
+						"'$productName', '$productDescription', '$productPrice','$productPic','$catID')" ;
+			echo $sql;
+		$affected=$db->execute($sql);
+		 echo $affected;
+			if ($affected !== 1) {
 					throw new InvalidDataException("Insert product failed");	
 				}
-                $this->productId=$db->getInsertID();
-            } else {
-                $sql="update products ".
+			$this->productId=$db->getInsertID();
+		} else {
+			$sql="update products ".
 					"set productName='$productName', ".
-			        "productDescription='$productDescription', ".
-					"productPrice ='$productPrice', ".
-					"productPic ='$productPic', ".
-					"catID = '$catID' ".
+			            "productDescription='$productDescription' ".
+						 "productPrice ='$productPrice' ".
+						 	 "productPic ='$productPic' ".
 					"where productID= $productId";
-                if ($db->execute($sql) !== 1) {
-				throw new InvalidDataException("Update product failed");	
-                }
-            }
-            $this->hasChanges=false;
-            //$this->changed =false;
-        }
+					if ($db->execute($sql) !== 1) {
+					throw new InvalidDataException("Update product failed");	
+				}
+			
+		}
+		$this->hasChanges=false;
+		//$this->changed =false;
+		
+	}
 	}
 		
 		
@@ -172,11 +200,11 @@ class ProductModel extends AbstractModel {
 	public function delete () {
 	    $sql='delete from products where productID = '.$this->productId;;
 		$rows=$this->getDB()->execute($sql);
-		$this->id=null;
+		$this->id=$null;
 		$this->changed=false;
 	}
-	
-    public static function errorInProductName($value) {
+
+	public static function errorInProductName($value) {
 		if ($value==null || strlen($value)==0) {
 			return 'Product name must be specified';
 		}
@@ -190,23 +218,20 @@ class ProductModel extends AbstractModel {
 		if ($value== null) {
 			return 'Price must be specified';
 		}
-		if (!is_numeric($value)) {
-		return "must be a number please";
-		}
-		if ($value <0 ) {
+		if ($value <0) {
 		return "No negative number no words please";
 		}
 		return null;
-	}
+		}
 	
 	public static function errorInProductPic($value) {
 		if ($value==null ) {// in the future we might need to check the extension of images 
 			return 'Picture  must be supplied';
 		}
 		return null;
-	}
+		}
 	
-	public function setProductDescription($value) { //needed  function
+	public function setDescription($value) { //needed  function
 		$error=$this->errorInProductDescription($value);
 		if ($error!==null ){
 			throw new InvalidDataException($error);
@@ -224,18 +249,25 @@ class ProductModel extends AbstractModel {
 			return 'Category  must be supplied';
 		}
 		return null;
-	}
-	
-    //Logic problem with returns
+		}
+	/*	public static function isExistingId($db,$id) {
+		if ($id==null){
+			return false;
+		}
+		if (!is_int($id) && !(ctype_digit($id))) {
+			return false;
+		}
+		*/
 	public static function errorInProductDescription($value) {//irrelevant  kb
 		if ($value==null || strlen($value)==0) {
-			return 'Product description must be given';
+			return 'desc name must be specified';
 		}
 	
-        if ($value <0){
-        return "not negative number";
-        }
-				
+      if ($value <0){
+	  return "not negative number";
+	  }
+		
+		
 		return null;
 	}
 }

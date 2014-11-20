@@ -13,16 +13,12 @@ class User {
 	private $isAdmin;		// lazy boolean
 	private $dateCreated; 	// stored as unix timestamp
 	private $lastLogin;  	// stored as unix timestamp
-    //CSRF Addition start
-    private $CSRFToken;     // string
-    //CSRF Addition end
 	
 	public function __construct ($context){
 		$this->db=$context->getDB();
 		$this->session=$context->getSession();
 		$this->init();
 	}
-    
 	private function init() {
 		$this->uid=null; 
 		$this->name='';   		// default for anonymous user
@@ -131,25 +127,16 @@ class User {
 		$timestamp=date('Y-m-d H:i:s',time());
 		$sql="update users set lastLogin='$timestamp;'";
 		$this->db->execute($sql);
-        //CSRF Addition start
-		echo "CSRF setting";
-        $this->CSRFToken=$this->setCSRFToken($userID);
-        echo "CSRF setting done";
-        //CSRF Addition end
+		
 		$this->session->set('userID',$userID);
 		$this->session->changeContext();
 		$this->init();
 	}
 	public function logout() {
-        //CSRF Addition start
-        $user=$this->session->get('userID');
-        $this->unsetCSRFToken($user);
-        //CSRF Addition end
-        $this->session->unsetKey('userID');
+		$this->session->unsetKey('userID');
 		$this->session->changeContext();
 		$this->init();
 	}
-    
 		// output should be 75 chars 
 	private static function createPasswordCheck ($password) {
 		$input=sha1($password.'security 101');
@@ -161,75 +148,5 @@ class User {
 		// let crypt do the heavy lifting
 		return crypt($input,'$5$rounds=5000$'.$salt);
 	}	
-    
-    // Creates a Cross Site Referal Forgery prevention Token
-    // Called by setCSRFToken 
-    private function CSRFGenerate(){
-        if (function_exists("hash_algos") and in_array("sha512",hash_algos())){
-        //mt_rand() Improved randomizer 
-            $token=hash("sha512",mt_rand(0,mt_getrandmax()));
-        }else{
-        $token=' ';
-        for ($i=0;$i<128;++$i){
-            $r=mt_rand(0,35);
-                if ($r<26){
-                    $c=chr(ord('a')+$r);
-                }else{ 
-                    $c=chr(ord('0')+$r-26);
-                } 
-            $token.=$c;
-            }
-        }
-	return $token;
-    }
-    
-    //Stores the CSRF token to the users record in the database.
-    private function setCSRFToken($user){
-        $userID = $user;
-        $token = $this->CSRFGenerate();
-        echo "Setting in DB</br>";
-        $sql = "update users set CSRFToken='$token' where userID ='$userID';";
-        echo $sql;
-        echo '</br>';
-        $this->db->execute($sql);
-        echo "Set in DB";
-    }
- 
-    //Goes in logout function/time out funciton(s)
-    //Check $user is correct
-    public function unsetCSRFToken($token){
-        $userID = $this->uid;
-        $sql= "update users set CSRFToken= null where userID = $userID;";
-        $this->db->execute($sql);
-    }
-    /*
-    // Goes in form requests
-    // Check $user is correct
-    public function CSRFCheck($token){
-    //$userID =
-        $dbToken = getCSRFToken($user)
-        if  ($token == $dbToken ){
-            return true
-        }
-        else{   
-            return False
-        }
-    }   
-    
-    // Called in CSRFCheck
-    // Double check this works as intended
-    // Check $user is correct
-    private function getCSRFToken($userID){
-        $sql="select token from users where userID=$userID";
-        $result=$this->db->query($sql);
-        if (count($result)==1) {
-            $token=$result[0];
-            return $token
-        }   
-    }
-*/
-
-    
 }
-
 ?>

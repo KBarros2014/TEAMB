@@ -1,7 +1,0 @@
-{ 
-	"name": "Test of Product class",
-	"author": "Naicy",
-	"unitTest": "ShoppingCartTest"
-}
-
-

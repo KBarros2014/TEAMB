@@ -17,23 +17,18 @@ class CustomerController extends CrudController {
 	protected function getTemplateForNew () {
 		return 'html/forms/adminCustomersNew.html';
 	}
-
 	protected function getTemplateForEdit () {
 		return 'html/forms/adminCustomersEdit.html';
 	}
-
 	protected function getTemplateForDelete () {
 		return 'html/forms/adminCustomersDelete.html';
 	}
-
 	protected function getTemplateForView () {
 		return 'html/forms/adminCustomersView.html';
 	}
-
 	protected function createModel($id) {
 		return new CustomerModel($this->getDB(),$id);
 	}
-
 	protected function getModelData($model) {
 		$this->setField('firstname', $model->getCustomerFirstName());
 		$this->setField('lastName',$model->getCustomerLastName());
@@ -42,8 +37,8 @@ class CustomerController extends CrudController {
 		$this->setField('postcode',$model->getCustomerPostCode());
 		//$this->setField('email',$model->getcustomerEmail());for testing purposes I commented it out kBaros
 		//I need to create the function in customer model
+			
 	}
-
 	protected function getFormData() {
 		$firstname=$this->getInput('firstname');
 		$this->setField('firstname', $firstname);
@@ -84,8 +79,8 @@ class CustomerController extends CrudController {
 		if ($error!==null) {
 			$this->setError ('email',$error);
 		}
+		
 	}
-    
 	protected function updateModel($model) {//this function gets input boxes asks model if it s right asves it kab
 		$firstname=$this->getField('firstname');//kb
 		$lastname=$this->getField('lastname');
@@ -101,7 +96,6 @@ class CustomerController extends CrudController {
 		$model->save();
 		$this->redirectTo('admin/customers',"Customer '$firstname' has been saved");//I will change that kb
 	}
-    
 	protected function deleteModel($model) {
 		$name=$model->getName();//this does not work yet kb
 		$model->delete();

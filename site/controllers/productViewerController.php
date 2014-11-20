@@ -1,15 +1,22 @@
+
 <?php
 
 include 'lib/abstractController.php';
-
-class CartController extends AbstractController {
+include 'lIb/view.php';
+class ProductViewerController extends AbstractController {
 
 	public function __construct($context) {
 		parent::__construct($context);
 	}
 
 	protected function getView($isPostback) {
-		echo '<h1>This page is not yet implemented</h1><br/><br/>';
+	   $db=$this->getDB();
+
+		
+	
+		
+		return $view;
+	  
 	}
 }	
 ?>

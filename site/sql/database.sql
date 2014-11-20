@@ -41,7 +41,6 @@ create table users (
 		pwCheck varchar(75), 
 		dateCreated datetime, 
 		lastLogin datetime, 
-        CSRFToken varchar(128) default Null,
 		primary key (userID), 
 		unique key(email)
 );

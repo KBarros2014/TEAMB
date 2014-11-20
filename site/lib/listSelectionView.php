@@ -62,14 +62,15 @@ class ListSelectionView {
 			$this->valueColumn=$this->idColumn;
 		}
 		
-		$html='<select name="'.$this->formName.'">';
+		$html='<select name="'.$this->formName.'">'.PHP_EOL;
 		foreach ($this->data as $row) {
 			$id=$row[$this->idColumn];
 			$value=$row[$this->valueColumn];
-			$html.='<option value="'.$id.'"';
+			$html.='<option value="';
+			$html.=$id.'"';
 			if ($id == $this->selected) {
 				$html.=' selected="selected"';
-			}
+			}	
 			$html.=">$value</option>\n";
 		}
 		$html.="</select>\n";

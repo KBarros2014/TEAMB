@@ -56,7 +56,7 @@
 			case 'admin':
 				return getAdminController($context);
 			case 'noadmin':
-				return getNoAdminController($context);
+				return getNoAdminController($controller);
 			case '':
 				$uri->prependPart('home');
 				return 'Static';
@@ -66,13 +66,22 @@
 				return 'Login';
 			case 'logout':
 				return 'Logout';
-			case 'visit':
-				return 'Visits';
+			case "checkout":
+				return "Checkout";
+			case "cart":
+			      return "ShoppingCart";
+			case 'productsViewer':
+			      return 'productsViewer';
+
 			default:
-				throw new InvalidRequestException ("No such page");
+				throw new InvalidRequestException ("No such page KB ");
 		}
 	}
-
+      function getNoAdminController($context) {
+		
+		      return 'cart';
+		
+		}
 	// This is a very simple router
 	// We just match the URI to a stub of the controller name
 	function getAdminController($context) {
@@ -94,21 +103,29 @@
 				return 'Customers';
 		    case 'customer':
 				return 'Customer';
+
 			case 'orders':
 				return 'Orders';
 			case 'order':
 				return 'Order';
-			case 'order':
-				return 'Order';
+
+			
 			case 'orders':
 				return 'Orders';
 			case 'checkout':
 				return 'Checkout';
+		  	case 'shoppingcart';
+			     return 'ShoppingCart';
+		  
+		    case 'productView':
+			     return 'productViewer';
+
+
 			default:
 				throw new InvalidRequestException ('No such page');
 		}
-		
 	}
 	
-
 ?>
+
+
