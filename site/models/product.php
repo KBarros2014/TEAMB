@@ -24,7 +24,7 @@ class ProductModel extends AbstractModel {
 		
 	*/
 	
-    public function __construct($db, $productId=null)  { //another field to be inserted here I will work on it after holiday
+    public function __construct($db, $productId=null)  { 
 		parent::__construct($db);
 		$this->productId=$productId;
 		//$this->setProductName= ($productName);
